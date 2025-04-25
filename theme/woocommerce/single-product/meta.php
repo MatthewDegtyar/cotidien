@@ -25,7 +25,8 @@ global $product;
 ?>
 <div class="product_meta">
 
-	<?php do_action( 'woocommerce_product_meta_start' ); ?>
+	<!-- Commenting this out because customers should not see SKU, categories, and tags on the website -->
+	<!-- <?php do_action( 'woocommerce_product_meta_start' ); ?>
 
 	<?php if ( wc_product_sku_enabled() && ( $product->get_sku() || $product->is_type( ProductType::VARIABLE ) ) ) : ?>
 
@@ -37,6 +38,6 @@ global $product;
 
 	<?php echo wc_get_product_tag_list( $product->get_id(), ', ', '<span class="tagged_as">' . _n( 'Tag:', 'Tags:', count( $product->get_tag_ids() ), 'woocommerce' ) . ' ', '</span>' ); ?>
 
-	<?php do_action( 'woocommerce_product_meta_end' ); ?>
+	<?php do_action( 'woocommerce_product_meta_end' ); ?> -->
 
 </div>
