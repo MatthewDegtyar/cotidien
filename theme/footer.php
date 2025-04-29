@@ -48,7 +48,6 @@
 			<input type="hidden" name="form_id" value="cotidien-form-newsletter2">
 			<div class="flex flex-row w-full justify-between">
 				<input type="email" name="email" class="outline-none text-[14px] w-full" placeholder="Your Email" required />
-				<input type="number" name="number" class="outline-none text-[14px] w-full" placeholder="number" required />
 				<button type="submit" class="uppercase text-[14px] hover:underline cursor-pointer">Subscribe</button>
 			</div>
 			<div class="h-[1px] w-[340px] lg:w-[430px] bg-black mt-2"></div>
