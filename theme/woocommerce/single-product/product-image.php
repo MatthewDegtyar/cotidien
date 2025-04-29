@@ -35,7 +35,7 @@ $wrapper_classes   = apply_filters(
 				<?php
 				// Get the main product image
 				if ($post_thumbnail_id) {
-					$main_image_url = wp_get_attachment_image_url($post_thumbnail_id, 'large');
+					$main_image_url = wp_get_attachment_image_url($post_thumbnail_id, 'extralarge');
 					echo '<div class="slide"><img src="' . esc_url($main_image_url) . '" alt="' . esc_attr(get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true)) . '"></div>';
 				}
 
@@ -43,7 +43,7 @@ $wrapper_classes   = apply_filters(
 				$gallery_image_ids = $product->get_gallery_image_ids();
 				if ($gallery_image_ids && count($gallery_image_ids) > 0) {
 					foreach ($gallery_image_ids as $image_id) {
-						$image_url = wp_get_attachment_image_url($image_id, 'large');
+						$image_url = wp_get_attachment_image_url($image_id, 'extralarge');
 						echo '<div class="slide"><img src="' . esc_url($image_url) . '" alt="' . esc_attr(get_post_meta($image_id, '_wp_attachment_image_alt', true)) . '"></div>';
 					}
 				}
