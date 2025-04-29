@@ -96,6 +96,11 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 				 */
 				do_action( 'woocommerce_single_variation' );
 
+				/**
+				 * Add Size Guide Button after the product description
+				 */
+				add_action( 'woocommerce_after_single_variation', 'add_size_guide_button', 18 );
+
 				// Add product description after the variation details
 				add_action( 'woocommerce_after_single_variation', 'add_product_description_after_variation', 20 );
 

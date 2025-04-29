@@ -1285,3 +1285,17 @@ table.wc-block-cart-items .wc-block-cart-items__row,
 		padding-right: 8px !important;
 	}
 }
+
+/* Hide the modal by default */
+#size-guide-modal {
+	display: none;
+	background-color: rgba(0, 0, 0, 0.4);
+	/* 20% opacity black background */
+}
+
+/* When the checkbox is checked, show the modal */
+#size-guide-toggle:checked~#size-guide-modal {
+	display: flex;
+	background-color: rgba(0, 0, 0, 0.4);
+	/* 20% opacity black background */
+}
