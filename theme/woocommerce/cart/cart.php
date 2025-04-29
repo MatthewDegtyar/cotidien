@@ -227,6 +227,21 @@ do_action( 'woocommerce_before_cart' ); ?>
 <?php do_action( 'woocommerce_after_cart' ); ?>
 
 
+<style>
+	@media (min-width:1024px ){
+		.entry-header {
+			margin-left: 55px;
+		}
+	}
+
+	@media (max-widthL1024px){
+		.entry-header {
+			margin-left: 16px;
+		}
+	}
+	
+</style>
+
 <script>
 jQuery(document).ready(function($) {
     // Event delegation for dynamic elements

@@ -6,6 +6,7 @@ get_header();
 ?>
 
 <?php
+
 // Default image URL
 $default_img = 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8?q=80&w=3870&auto=format&fit=crop';
 

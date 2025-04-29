@@ -146,6 +146,7 @@ function custom_title_price_wrapper() {
 
 add_action('woocommerce_before_quantity_input_field', 'add_custom_quantity_label', 10, 0);
 function theme_customize_register($wp_customize) {
+	
     // Section for About Page Images
     $wp_customize->add_section('about_section', array(
         'title' => __('About Page Images'),
@@ -274,7 +275,6 @@ if ( ! function_exists( 'wc_variation_attribute_buttons' ) ) {
 
 // Helper function to check if it's a color option
 function is_color_option($attribute) {
-
     return strpos( $attribute, 'color' ) !== false || $attribute === 'Color'; // Adjust this as per your color attribute
 }
 
@@ -307,12 +307,352 @@ function custom_variation_buttons_script() {
     ");
 }
 
+
+
+
+
+// Hook to capture all form submissions
+function track_form_submission() {
+    if ( isset( $_POST ) && !empty( $_POST ) ) {
+        // Check if the form id matches our pattern 'cotidien-form-'
+        if ( isset( $_POST['form_id'] ) && strpos( $_POST['form_id'], 'cotidien-form-' ) === 0 ) {
+            // Get the form identifier
+            $form_id = sanitize_text_field( $_POST['form_id'] );
+
+            // Capture all POST data from the form
+            $form_data = array();
+            foreach ( $_POST as $key => $value ) {
+                if ( $key !== 'form_id' ) { // We don't need to store the form_id itself
+                    $form_data[$key] = sanitize_text_field( $value );
+                }
+            }
+
+            // Save the submission in the database
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'form_submissions';
+
+            // Insert the submission data
+            $wpdb->insert( 
+                $table_name,
+                array(
+                    'form_id'   => $form_id,
+                    'form_data' => json_encode( $form_data ),  // Save the form data as JSON (key-value pairs)
+                    'submitted_at' => current_time( 'mysql' )
+                )
+            );
+        }
+    }
+}
+add_action( 'init', 'track_form_submission' );
+
+
+ // Hook into 'wp' instead of 'init' for form data to be captured correctly.
+
+// Display the success message globally at the top of the page
+function display_form_submission_message() {
+    if (get_transient('form_submission_success')) {
+        echo '<div class="form-success-message font-jakarta" style="background-color: #fff; color: black; padding: 10px; text-align: center;">' . esc_html(get_transient('form_submission_success')) . '</div>';
+        delete_transient('form_submission_success'); // Clear the success message after displaying
+    }
+}
+add_action('wp_head', 'display_form_submission_message'); // This will make sure the message appears at the top
+
+// Add admin menu page to view form submissions
+function add_form_submission_menu() {
+    add_menu_page(
+        'Form Submissions', // Page title
+        'Form Submissions', // Menu title
+        'manage_options',   // Capability
+        'form_submissions', // Menu slug
+        'render_form_submission_page', // Callback function to render the page
+        'dashicons-forms',  // Icon
+        20 // Position
+    );
+}
+add_action( 'admin_menu', 'add_form_submission_menu' );
+
+
+// Render the form submissions page in the admin panel
+function render_form_submission_page() {
+    global $wpdb;
+
+    // Default sorting by submitted_at in descending order (most recent first)
+    $order_by = isset($_GET['orderby']) ? sanitize_text_field($_GET['orderby']) : 'submitted_at';
+    $order = isset($_GET['order']) && $_GET['order'] == 'asc' ? 'ASC' : 'DESC';
+
+    // Handle Pagination
+    $per_page = 20; // Limit to 1 submission per page
+    $paged = isset($_GET['paged']) ? intval($_GET['paged']) : 1; // Get current page number
+    $offset = ( $paged - 1 ) * $per_page; // Calculate the offset
+
+    // Query for the form submissions with pagination
+    $table_name = $wpdb->prefix . 'form_submissions';
+    $submissions = $wpdb->get_results( "SELECT * FROM $table_name ORDER BY $order_by $order LIMIT $per_page OFFSET $offset" );
+
+    // Query to get the total number of submissions for pagination
+    $total_submissions = $wpdb->get_var( "SELECT COUNT(*) FROM $table_name" );
+    $total_pages = ceil( $total_submissions / $per_page ); // Calculate the total pages
+
+    echo '<div class="wrap">';
+    echo '<h1>Form Submissions</h1>';
+
+    // Export button
+    echo '<form method="post" action="' . esc_url( admin_url('admin-ajax.php') ) . '">';
+    echo '<input type="hidden" name="action" value="export_submissions_to_zip">';
+    echo '<button type="submit" class="button">Export CSV</button>';
+    echo '</form>';
+
+    // Delete Submission functionality
+    if ( isset( $_GET['delete_submission'] ) && isset( $_GET['submission_id'] ) ) {
+        $submission_id = intval( $_GET['submission_id'] );
+        // Perform deletion from the database
+        $wpdb->delete( $table_name, [ 'id' => $submission_id ] );
+        echo '<div class="updated"><p>Submission deleted successfully.</p></div>';
+    }
+
+    // Display the submissions in a table
+    if ($submissions) {
+        echo '<table class="wp-list-table widefat fixed striped" style="margin-top:5px;">';
+        echo '<thead><tr><th>ID</th><th>Form ID</th><th>Submitted Data</th><th>Submission Time</th><th>Action</th></tr></thead>';
+        echo '<tbody>';
+
+        foreach ($submissions as $submission) {
+            // Decode the form data (no serialization, just JSON)
+            $form_data = json_decode( $submission->form_data, true );
+
+            $form_data_display = '';
+            if (is_array($form_data)) {
+                // Format form data as key-value pairs
+                foreach ($form_data as $key => $value) {
+                    $form_data_display .= "<strong>" . esc_html($key) . ":</strong> " . esc_html($value) . "<br>";
+                }
+            }
+
+            echo '<tr>';
+            echo '<td>' . esc_html( $submission->id ) . '</td>';
+            echo '<td>' . esc_html( $submission->form_id ) . '</td>';
+            echo '<td>' . $form_data_display . '</td>';
+            echo '<td>' . esc_html( $submission->submitted_at ) . '</td>';
+            echo '<td><a href="' . esc_url( add_query_arg(['delete_submission' => 1, 'submission_id' => $submission->id], admin_url('admin.php?page=form_submissions')) ) . '" class="button button-danger">Delete</a></td>';
+            echo '</tr>';
+        }
+
+        echo '</tbody>';
+        echo '</table>';
+    } else {
+        echo '<p>No submissions found.</p>';
+    }
+
+    // Pagination controls
+    if ($total_pages > 1) {
+        echo '<div class="tablenav"><div class="tablenav-pages">';
+
+        // Previous page link
+        if ($paged > 1) {
+            echo '<a class="prev-page" href="' . esc_url( add_query_arg( 'paged', $paged - 1, admin_url('admin.php?page=form_submissions') ) ) . '">&laquo; Previous</a>';
+        }
+
+        // Next page link
+        if ($paged < $total_pages) {
+            echo '<a class="next-page" href="' . esc_url( add_query_arg( 'paged', $paged + 1, admin_url('admin.php?page=form_submissions') ) ) . '">Next &raquo;</a>';
+        }
+
+        echo '</div></div>';
+    }
+
+    echo '</div>';
+}
+
+
+// Handle the export to CSV functionality
+function export_submissions_to_zip() {
+    global $wpdb;
+
+    // Check if the action is the right one for exporting
+    if ( isset( $_POST['action'] ) && $_POST['action'] === 'export_submissions_to_zip' ) {
+        
+        // Debugging log
+        error_log("Starting export process.");
+
+        // Get form submissions from the database
+        $table_name = $wpdb->prefix . 'form_submissions';
+        $submissions = $wpdb->get_results( "SELECT * FROM $table_name ORDER BY submitted_at DESC" );
+
+        // Debugging log if no submissions found
+        if ( !$submissions ) {
+            error_log("No submissions found.");
+            die("No submissions found.");
+        }
+
+        // Create a temporary folder to store CSV files
+        $temp_dir = wp_upload_dir()['basedir'] . '/form_exports/';
+        if ( !file_exists( $temp_dir ) ) {
+            mkdir( $temp_dir, 0755, true ); // Create the directory if it doesn't exist
+        }
+
+        // Group submissions by form_id
+        $forms_data = [];
+        foreach ( $submissions as $submission ) {
+            $form_data = json_decode( $submission->form_data, true );
+            $form_id = $submission->form_id;
+
+            if ( !isset( $forms_data[$form_id] ) ) {
+                $forms_data[$form_id] = [];
+            }
+
+            $forms_data[$form_id][] = [
+                'id' => $submission->id,
+                'form_id' => $submission->form_id,
+                'submitted_at' => $submission->submitted_at,
+                'form_data' => $form_data,
+            ];
+        }
+
+        // Prepare CSV files for each form_id
+        $csv_files = [];
+        foreach ( $forms_data as $form_id => $form_submissions ) {
+
+            // Create CSV header dynamically
+            $csv_header = "ID,Form ID,Submission Time";
+            $fields = [];
+
+            // Get unique fields from the form data
+            foreach ( $form_submissions as $submission ) {
+                foreach ( $submission['form_data'] as $key => $value ) {
+                    if ( !in_array( $key, $fields ) ) {
+                        $fields[] = $key;
+                    }
+                }
+            }
+
+            // Add fields to the CSV header
+            foreach ( $fields as $field ) {
+                $csv_header .= ",$field";
+            }
+            $csv_header .= "\n";
+
+            // Build the CSV content
+            $csv_content = $csv_header;
+            foreach ( $form_submissions as $submission ) {
+                $row_data = [
+                    esc_html( $submission['id'] ),
+                    esc_html( $submission['form_id'] ),
+                    esc_html( $submission['submitted_at'] ),
+                ];
+
+                // Add form data to the row
+                foreach ( $fields as $field ) {
+                    $row_data[] = isset( $submission['form_data'][$field] ) ? esc_html( $submission['form_data'][$field] ) : '';
+                }
+
+                $csv_content .= '"' . implode( '","', $row_data ) . "\"\n";
+            }
+
+            // Save the CSV content to a file in the temporary directory
+            $csv_file_path = $temp_dir . "$form_id.csv";
+            file_put_contents( $csv_file_path, $csv_content );
+            $csv_files[] = $csv_file_path;
+        }
+
+        // Debugging log if CSV files are created
+        error_log("CSV files created.");
+
+        // Create a ZIP archive of all CSV files
+        $zip_file = wp_upload_dir()['basedir'] . '/form_exports.zip';
+        $zip = new ZipArchive();
+
+        // Check if the ZIP file is created successfully
+        if ( $zip->open( $zip_file, ZipArchive::CREATE ) !== true ) {
+            error_log("Unable to create ZIP file.");
+            die("Unable to create ZIP file.");
+        }
+
+        // Add each CSV file to the ZIP archive
+        foreach ( $csv_files as $csv_file ) {
+            $zip->addFile( $csv_file, basename( $csv_file ) );
+        }
+
+        $zip->close();
+
+        // Debugging log if ZIP file is created
+        error_log("ZIP file created.");
+
+        // Offer the ZIP file for download
+        header('Content-Type: application/zip');
+        header('Content-Disposition: attachment; filename="form_submissions.zip"');
+        header('Content-Length: ' . filesize( $zip_file ));
+        readfile( $zip_file );
+
+        // Clean up temporary files
+        foreach ( $csv_files as $csv_file ) {
+            unlink( $csv_file ); // Delete the CSV file after adding it to the ZIP
+        }
+        unlink( $zip_file ); // Delete the ZIP file after download
+
+        exit;
+    }
+}
+
+add_action( 'wp_ajax_export_submissions_to_zip', 'export_submissions_to_zip' );
+add_action( 'wp_ajax_nopriv_export_submissions_to_zip', 'export_submissions_to_zip' );
+
+// Create custom table to store form submissions on theme/plugin activation
+// Check if the table exists and create it if necessary
+function create_form_submission_table() {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . 'form_submissions';
+
+    // Check if the table already exists
+    if ($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
+
+        // Table doesn't exist, create it
+        $charset_collate = $wpdb->get_charset_collate();
+
+        $sql = "CREATE TABLE $table_name (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            form_id varchar(255) NOT NULL,
+            form_data longtext NOT NULL,
+            submitted_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+            PRIMARY KEY  (id)
+        ) $charset_collate;";
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
+    }
+}
+add_action( 'init', 'create_form_submission_table' );
+
+
+
+add_action( 'wp_head', 'custom_checkout_inline_style' );
+function custom_checkout_inline_style() {
+	if ( is_checkout() ) {
+		?>
+		<style>
+			@media (min-width: 1024px) {
+				.entry-header {
+					margin-left: 55px;
+				}
+			}
+
+			@media (max-width: 1024px) {
+				.entry-header {
+					margin-left: 0px;
+				}
+			}
+		</style>
+		<?php
+	}
+}
+
+
 add_action('wp_enqueue_scripts', 'custom_variation_buttons_script');
 
 
 add_action('after_setup_theme', 'custom_woocommerce_image_sizes');
 function custom_woocommerce_image_sizes() {
-    add_image_size('custom-size-420x670', 420, 670, true); // 420x670px with cropping enabled
+    add_image_size('custom-size-420x670', 420*1.5, 670*1.5, true); // 420x670px with cropping enabled
 }
 
 /**
@@ -408,7 +748,6 @@ function custom_checkout_value_clear($value, $input) {
 
     return $value;
 }
-
 
 /**
  * Enqueue the block editor script.

@@ -19,7 +19,7 @@
 <div class="flex flex-col py-[52px]">
 	<div class="main-content-width flex flex-row flex-wrap gap-16 justify-between ">
 		<a href="/"><span class="text-[24px] font-cormorant uppercase">Cotidien</span></a>
-		<div class="flex flex-row ">
+		<div class="flex flex-row flex-wrap gap-8 sm:gap-0">
 			<div class="flex flex-col gap-4 w-[150px] lg:w-[180px]">
 				<span class="mb-2">Shop</span>
 				<a href="/shop" class="font-light hover:underline">Shop All</a>
@@ -43,16 +43,21 @@
 	
 		<div class="flex flex-col">
 			<span class="font-cormorant text-[18px] mb-8">Subscribe to our Newsletter</span>
-	
-			<div class="flex flex-row w-full justify-between ">
-				<input class="outline-none text-[14px] w-[]" placeholder="Your Email"/><button class="uppercase text-[14px] hover:underline cursor-pointer">Subscribe</button>
+
+			<form action="#" method="POST" class="custom-newsletter-form">
+			<input type="hidden" name="form_id" value="cotidien-form-newsletter2">
+			<div class="flex flex-row w-full justify-between">
+				<input type="email" name="email" class="outline-none text-[14px] w-full" placeholder="Your Email" required />
+				<input type="number" name="number" class="outline-none text-[14px] w-full" placeholder="number" required />
+				<button type="submit" class="uppercase text-[14px] hover:underline cursor-pointer">Subscribe</button>
 			</div>
 			<div class="h-[1px] w-[340px] lg:w-[430px] bg-black mt-2"></div>
-	
+		</form>
+
 		</div>
 	
 	</div>
-	<div class="w-full flex flex-row items-center main-content-width gap-4">
+	<div class="w-full flex flex-row items-center main-content-width gap-4 mt-4">
 		<a href="#">
 			<svg class="w-6 h-6 text-[#828282]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
 				<path fill-rule="evenodd" d="M13.135 6H15V3h-1.865a4.147 4.147 0 0 0-4.142 4.142V9H7v3h2v9.938h3V12h2.021l.592-3H12V6.591A.6.6 0 0 1 12.592 6h.543Z" clip-rule="evenodd"/>
@@ -76,8 +81,6 @@
 		</a>
 	</div>
 </div>
-
-
 
 <?php wp_footer(); ?>
 
