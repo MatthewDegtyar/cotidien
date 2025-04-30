@@ -22,22 +22,24 @@
 		<div class="flex flex-row flex-wrap gap-8 sm:gap-0">
 			<div class="flex flex-col gap-4 w-[150px] lg:w-[180px]">
 				<span class="mb-2">Shop</span>
-				<a href="/shop" class="font-light hover:underline">Shop All</a>
-				<a href="/shop/?orderby=popularity" class="font-light hover:underline">Best Sellers</a>
-				<a href="/shop/?orderby=date" class="font-light hover:underline">New In</a>
+				<a href="/shop" class="text-sm font-light hover:underline">Shop All</a>
+				<a href="/shop/?orderby=popularity" class="text-sm font-light hover:underline">Best Sellers</a>
+				<a href="/shop/?orderby=date" class="text-sm font-light hover:underline">New In</a>
 			</div>
 			<div class="flex flex-col gap-4 w-[150px] lg:w-[180px]">
 				<span class="mb-2">About</span>
-				<a class="font-light hover:underline">Our Origin</a>
-				<a class="font-light hover:underline">Threads</a>
-				<a class="font-light hover:underline">Press</a>
+				<a href="/about" class="text-sm font-light hover:underline">Our Origin</a>
+				<a href="/threads" class="text-sm font-light hover:underline">Threads</a>
+				<!-- <a class="text-sm font-light hover:underline">Press</a> -->
 			</div>
 			<div class="flex flex-col gap-4 w-[150px] lg:w-[180px]">
 				<span class="mb-2">Concierge</span>
-				<a class="font-light hover:underline">FAQs</a>
-				<a class="font-light hover:underline">Contact</a>
-				<a class="font-light hover:underline">Shipping</a>
-				<a class="font-light hover:underline">Returns</a>
+				<!-- <a class="font-light hover:underline">FAQs</a> -->
+				<!-- <a class="font-light hover:underline">Contact</a>
+				<a class="font-light hover:underline">Shipping</a> -->
+				<a href="/return-policy" class="text-sm font-light hover:underline">Returns</a>
+				<a href="/privacy-policy" class ="text-sm font-light hover:underline">Privacy Policy</a>
+				<a href="/terms-and-conditions" class="text-sm font-light hover:underline">Terms and Conditions</a>
 			</div>
 		</div>
 	

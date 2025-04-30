@@ -1325,3 +1325,119 @@ table.wc-block-cart-items .wc-block-cart-items__row,
 	background-color: rgba(0, 0, 0, 0.4);
 	/* 20% opacity black background */
 }
+
+/* General Layout */
+
+.privacy-policy-page h2 {
+	font-size: 16px;
+	margin-top: 12px;
+	margin-bottom: 12px;
+	font-weight: 600;
+	font-family: "Cormorant Garamond";
+}
+
+.privacy-policy-page h3 {
+	font-size: 14px;
+	font-weight: 600;
+	font-family: "Cormorant Garamond";
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.privacy-policy-page p {
+	font-size: 12px;
+	line-height: 1.6;
+	margin-bottom: 8px;
+}
+
+.privacy-policy-page ul {
+	list-style-type: "— ";
+	margin-left: 30px;
+	font-size: 12px;
+}
+
+.privacy-policy-page address {
+	margin-top: 16px;
+	font-family: "Cormorant Garamond";
+}
+
+.privacy-policy-page strong {
+	font-weight: 600;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+	.privacy-policy-page {
+		padding: 15px;
+	}
+
+	.privacy-policy-page h1 {
+		font-size: 36px;
+	}
+
+	.privacy-policy-page h2 {
+		font-size: 20px;
+	}
+
+	.privacy-policy-page h3 {
+		font-size: 16px;
+	}
+}
+
+/* General Layout */
+
+.terms-and-conditions-page h2 {
+	font-size: 16px;
+	margin-top: 12px;
+	margin-bottom: 12px;
+	font-weight: 600;
+	font-family: "Cormorant Garamond";
+}
+
+.terms-and-conditions-page h3 {
+	font-size: 14px;
+	font-weight: 600;
+	font-family: "Cormorant Garamond";
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.terms-and-conditions-page p {
+	font-size: 12px;
+	line-height: 1.6;
+	margin-bottom: 8px;
+}
+
+.terms-and-conditions-page ul {
+	list-style-type: "— ";
+	margin-left: 30px;
+	font-size: 12px;
+}
+
+.terms-and-conditions-page address {
+	margin-top: 16px;
+	font-family: "Cormorant Garamond";
+}
+
+.terms-and-conditions-page strong {
+	font-weight: 600;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+	.terms-and-conditions-page {
+		padding: 15px;
+	}
+
+	.terms-and-conditions-page h1 {
+		font-size: 36px;
+	}
+
+	.terms-and-conditions-page h2 {
+		font-size: 20px;
+	}
+
+	.terms-and-conditions-page h3 {
+		font-size: 16px;
+	}
+}

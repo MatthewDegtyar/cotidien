@@ -21,7 +21,7 @@ $img3 = get_theme_mod('about_img_3', $default_img);
 
 <main class="threads-page">
     <div class="relative">
-        <h1 class="text-3xl lg:text-[64px] text-white font-cormorant absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:text-nowrap text-center z-10">
+        <h1 class="text-3xl lg:text-[58px] text-white font-cormorant absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:text-nowrap text-center z-10">
         New here? We’re happy you found us.    
         </h1>
 
