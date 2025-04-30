@@ -15,6 +15,16 @@
 get_header();
 ?>
 
+<?php
+
+// Default image URL
+$default_img = 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8?q=80&w=3870&auto=format&fit=crop';
+
+// Fetch the custom header image (falls back to $default_img if not set)
+$bottom_header = get_theme_mod('home_header_img', $default_img);
+
+?>
+
 	<section id="primary">
 		<main id="main">
 			<div class="flex flex-col main-content-width mb-4 lg:mb-[50px]">
@@ -27,7 +37,7 @@ get_header();
 				<div class="absolute top-0 left-0 w-full h-full z-10">
 					<img 
 					class="w-full h-full object-cover" 
-					src="https://plus.unsplash.com/premium_photo-1690541772579-a0a68ea59b1e?q=80&w=3864&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					src="<?php echo esc_url($bottom_header); ?>"
 					alt="Cotidien"
 					/>
 				</div>
@@ -40,14 +50,14 @@ get_header();
 					<h2 class="text-[28px] lg:text-[36px] font-cormorant">COTIDIEN (koh-tee-dee-ahn)</h2>
 					<p>"Cote" (꽃), meaning flower in Korean, and "quotidien," meaning everyday in French, together symbolize our brand's mission: to create beautiful, elevated pieces that seamlessly fit into your everyday wardrobe.</p>
 
-					<h3 class="text-[24px] font-cormorant mt-8">Our Story</h3>
+					<!-- <h3 class="text-[24px] font-cormorant mt-8">Our Story</h3>
 					<p>Body text for whatever you’d like to say. Add main takeaway points, quotes, anecdotes.</p>
 
 					<h3 class="text-[24px] font-cormorant mt-8">Our Concept</h3>
-					<p>Body text for whatever you’d like to add more to the main point. It provides details, explanations, and context.</p>
+					<p>Body text for whatever you’d like to add more to the main point. It provides details, explanations, and context.</p> -->
 
 					<div class="mt-8">
-					<a href="/shop" class="bg-white rounded-md text-[24px] text-black px-8 py-2 font-light hover:brightness-75">
+					<a href="/shop" class="bg-white text-[24px] text-black px-8 py-2 hover:brightness-75">
 						Discover Cotidien
 					</a>
 					</div>

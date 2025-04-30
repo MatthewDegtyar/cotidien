@@ -21,8 +21,8 @@ $img3 = get_theme_mod('about_img_3', $default_img);
 
 <main class="threads-page">
     <div class="relative">
-        <h1 class="text-4xl lg:text-[64px] font-semibold text-white font-cormorant absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:text-nowrap text-center z-10">
-            Timeless Styles & Vintage Silhouettes
+        <h1 class="text-3xl lg:text-[64px] text-white font-cormorant absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 sm:text-nowrap text-center z-10">
+        New here? We’re happy you found us.    
         </h1>
 
         <!-- Header Image -->
@@ -33,7 +33,10 @@ $img3 = get_theme_mod('about_img_3', $default_img);
         <div class="flex flex-col md:flex-row relative mt-[55px]">
             <div class="md:w-[50%]">
                 <h2 class="text-[24px]">February 2025</h2>
-                <p class="mt-[40px] text-[#828282]">"Cote" (꽃), meaning flower in Korean, and "quotidien," meaning everyday in French, together symbolize our brand's mission: to create beautiful, elevated pieces that seamlessly fit into your everyday wardrobe.</p>
+                <p class="mt-[40px] text-[#828282]" style="margin-right: 20px;">Cotidien started from that restless need to create, an energy that couldn't wait for permission. It began with flowers, then fabric, chasing that same feeling: freedom, clarity, and the kind of joy that shows up when you're fully in it. That creative pulse is what runs through every piece.</p>
+                <br>
+                <p class="mt-[40px] text-[#828282]" style="margin-right: 20px;">
+                In February 2025, it all came together. Cotidien became real — a space to build a wardrobe that felt elevated but easy, thoughtful but never fussy. Made for the everyday and memorable moments in between. </p>
             </div>
             <div class="md:w-[50%] mt-8 md:mt-0">
                 <!-- Image 1 (Using Custom or Default Image) -->
@@ -41,26 +44,6 @@ $img3 = get_theme_mod('about_img_3', $default_img);
             </div>
         </div>
 
-        <div class="flex flex-col md:flex-row gap-6 relative mt-[55px]">
-            <!-- Image 1 -->
-            <a href="#">
-                <img class="aspect-square object-cover" src="<?php echo esc_url($img1); ?>" />
-                <h2 class="text-[24px] font-cormorant mt-8">Our Designs</h2>
-                <p class="text-[12px] mt-6">From coffee shop idea to reality</p>
-            </a>
-            <!-- Image 2 -->
-            <a href="#">
-                <img class="aspect-square object-cover" src="<?php echo esc_url($img2); ?>" />
-                <h2 class="text-[24px] font-cormorant mt-8">Our Designs</h2>
-                <p class="text-[12px] mt-6">From coffee shop idea to reality</p>
-            </a>
-            <!-- Image 3 -->
-            <a href="#">
-                <img class="aspect-square object-cover" src="<?php echo esc_url($img3); ?>" />
-                <h2 class="text-[24px] font-cormorant mt-8">Our Designs</h2>
-                <p class="text-[12px] mt-6">From coffee shop idea to reality</p>
-            </a>
-        </div>
     </div>
 </main>
 

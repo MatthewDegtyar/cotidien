@@ -6,7 +6,7 @@ get_header();
 ?>
 
 <main class="threads-page main-content-width">
-  <h1 class="text-[36px] font-semibold mb-6 font-cormorant">Threads</h1>
+  <h1 class="text-[36px] mb-6 font-cormorant">Threads</h1>
   <div class="threads-grid grid md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-16">
 
     <?php

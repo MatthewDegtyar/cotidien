@@ -147,7 +147,7 @@ function custom_title_price_wrapper() {
 add_action('woocommerce_before_quantity_input_field', 'add_custom_quantity_label', 10, 0);
 function theme_customize_register($wp_customize) {
 	
-    // Section for About Page Images
+    //////// Section for About Page Images /////////
     $wp_customize->add_section('about_section', array(
         'title' => __('About Page Images'),
         'priority' => 30,
@@ -191,6 +191,22 @@ function theme_customize_register($wp_customize) {
         'label' => __('Image 3 (Our Designs)'),
         'section' => 'about_section',
         'settings' => 'about_img_3',
+    )));
+
+    //////// Section for Home Page Images /////////
+    $wp_customize->add_section('home_section', array(
+        'title' => __('Home Page Images'),
+        'priority' => 30,
+    ));
+
+    // Header Image
+    $wp_customize->add_setting('home_header_img', array(
+        'default' => 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8?q=80&w=3870&auto=format&fit=crop',
+    ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'home_header_img', array(
+        'label' => __('Home Header Image'),
+        'section' => 'home_section',
+        'settings' => 'home_header_img',
     )));
 }
 add_action('customize_register', 'theme_customize_register');
