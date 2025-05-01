@@ -66,7 +66,7 @@ get_header();
             <h2>3. Sharing Your Information</h2>
             <p>We may share your information with:</p>
             <ul>
-                <li><strong>service Providers:</strong> payment processors, shipping carriers, IT and marketing partners</li>
+                <li><strong>Service Providers:</strong> payment processors, shipping carriers, IT and marketing partners</li>
                 <li><strong>Legal Authorities:</strong> if required to comply with the law or protect rights</li>
                 <li><strong>Business Transfers:</strong> in case of a merger, acquisition, or sale of assets</li>
                 <li><strong>Marketing Platforms and Analytics Providers:</strong> e.g., Meta, Google</li>
@@ -124,7 +124,7 @@ get_header();
             <p>If you have questions about this Privacy Policy or wish to exercise your privacy rights, please contact us at:</p>
             <address class="not-italic text-sm text-gray-700">
                 Cotidien<br>
-                <a href="mailto:dossier.hui@gmail.com" class="text-blue-600 underline">dossier.hui@gmail.com</a>
+                <a href="mailto:dossier.hui@gmail.com" class="underline">dossier.hui@gmail.com</a>
             </address>
         </div>
     </div>

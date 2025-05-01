@@ -68,7 +68,7 @@ get_header();
 
     <div>
       <h2 class="text-xl font-semibold mb-2">7. Returns and Exchanges</h2>
-      <p>Returns and exchanges are governed by our <a href="#" class="text-blue-600 underline">Return Policy</a>. Abuse of our return system may lead to denial of service or benefit limitations.</p>
+      <p>Returns and exchanges are governed by our <a href="/return-policy" class="underline">Return Policy</a>. Abuse of our return system may lead to denial of service or benefit limitations.</p>
     </div>
 
     <div>
@@ -119,7 +119,7 @@ get_header();
       <p class="mb-2">If you have any questions about these Terms and Conditions, contact us at:</p>
       <address class="not-italic text-sm text-gray-700">
         Cotidien<br>
-        <a href="mailto:dossier.hui@gmail.com" class="text-blue-600 underline">dossier.hui@gmail.com</a>
+        <a href="mailto:dossier.hui@gmail.com" class="underline">dossier.hui@gmail.com</a>
       </address>
     </div>
   </div>

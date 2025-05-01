@@ -110,7 +110,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 					// Check if we are on a variable product page
 					if ( $product && $product->is_type( 'variable' ) ) {
 						echo '<div class="product-description-after-variation">';
-						echo '<h3>Product Description</h3>';
+						// echo '<h3>Product Description</h3>';
 						echo '<p>' . $product->get_description() . '</p>'; // Display the product description
 						echo '</div>';
 					}
