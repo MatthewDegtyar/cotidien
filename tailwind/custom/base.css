@@ -95,6 +95,15 @@ textarea {
 	transition: background-color 0.3s;
 }
 
+.variation-option[disabled] {
+	opacity: 0.4;
+	cursor: not-allowed;
+	pointer-events: none;
+	border: 1px solid #ccc;
+	background-color: #eee !important;
+	color: #888;
+}
+
 /* Rectangular buttons for size options */
 .variation-buttons .size-option {
 	width: 87px;
@@ -181,6 +190,16 @@ textarea {
 	background-color: black !important;
 	color: white !important;
 	margin-top: 24px !important;
+}
+
+.cart .single_add_to_cart_button.disabled {
+	background-color: #ccc !important;
+	/* Lighter gray */
+	color: #888 !important;
+	/* Dimmed text */
+	border-color: #aaa !important;
+	cursor: not-allowed !important;
+	opacity: 0.6;
 }
 
 .quantity input {

@@ -247,42 +247,75 @@ if ( ! function_exists( 'wc_variation_attribute_buttons' ) ) {
         $show_option_none      = (bool) $args['show_option_none'];
         $show_option_none_text = $args['show_option_none'] ? $args['show_option_none'] : __( 'Choose an option', 'woocommerce' );
 
-        // If options are empty, use product attributes
-        if ( empty( $options ) && ! empty( $product ) && ! empty( $attribute ) ) {
+        // Safe $_POST override after $attribute is defined
+        if ( $attribute && isset( $_POST[ 'attribute_' . $attribute ] ) ) {
+            $args['selected'] = sanitize_text_field( wp_unslash( $_POST[ 'attribute_' . $attribute ] ) );
+        }
+        $selected = $args['selected'];
+
+        if ( empty( $options ) && $product instanceof WC_Product_Variable && $attribute ) {
             $attributes = $product->get_variation_attributes();
             $options    = $attributes[ $attribute ];
         }
-		
-        // Start the button container
-        $html  = '<div class="variation-buttons" data-attribute-name="' . esc_attr( sanitize_title( $attribute ) ) . '">';
 
-        if ( ! empty( $options ) ) {
-			// Check if the attribute is a color option
-			$is_color_attribute = is_color_option( $attribute ); 
+        $is_color_attribute = is_color_option( $attribute );
+        $is_stock_attribute = in_array( sanitize_title( $attribute ), [ 'color', 'size' ] );
+        $is_button_attribute = ( sanitize_title( $attribute ) === 'button-type' );
 
-			// Loop through the sorted options and render them
-			foreach ( $options as $option ) {
-				
-				$button_class = $is_color_attribute ? 'color-option' : 'size-option';
-		
-				if ( $is_color_attribute ) {
-					$html .= '<button type="button" class="variation-option ' . $button_class . '" data-option="' . esc_attr( $option ) . '" style="background-color: ' . esc_attr( $option ) . '">';
-					$html .= '</button>';
-				} else {
-					$html .= '<button type="button" class="variation-option ' . $button_class . '" data-option="' . esc_attr( $option ) . '">' . esc_html( $option ) . '</button>';
-				}
-			}
-		}
+        // Get all variation data
+        $available_variations = $product->get_available_variations();
+
+        // Build a map of available options for each attribute
+        $enabled_options = [];
+
+        foreach ( $available_variations as $variation ) {
+            if ( ! $variation['is_in_stock'] ) {
+                continue;
+            }
+
+            foreach ( $variation['attributes'] as $attr_name => $attr_value ) {
+                $attr_slug = str_replace( 'attribute_', '', $attr_name );
+                if ( ! isset( $enabled_options[ $attr_slug ] ) ) {
+                    $enabled_options[ $attr_slug ] = [];
+                }
+                $enabled_options[ $attr_slug ][] = $attr_value;
+            }
+        }
+
+        // Output button group
+        $label = wc_attribute_label( $attribute );
+
+        $html  = '<div class="variation-buttons" data-attribute-name="' . esc_attr( sanitize_title( $attribute ) ) . '" data-attribute-label="' . esc_attr( $label ) . '">';
+        $html .= '<div class="variation-label" id="selected-option-' . esc_attr( sanitize_title( $attribute ) ) . '" style="font-weight:bold; margin-bottom: 4px; display: none;"></div>';
+
+        foreach ( $options as $option ) {
+            $option_slug = esc_attr( $option );
+            $button_class = $is_color_attribute ? 'color-option' : ( $is_button_attribute ? 'button-type-option' : 'size-option' );
+
+            $is_enabled = true;
+            if ( $is_stock_attribute ) {
+                $is_enabled = in_array( $option, $enabled_options[ sanitize_title( $attribute ) ] ?? [], true );
+            }
+
+            $disabled_attr = $is_enabled ? '' : 'disabled';
+            $selected_class = ( $selected === $option ) ? 'selected' : '';
+
+            if ( $is_color_attribute ) {
+                $html .= '<button type="button" class="variation-option ' . $button_class . ' ' . $selected_class . '" data-option="' . $option_slug . '" style="background-color: ' . esc_attr( $option ) . '" ' . $disabled_attr . '></button>';
+            } else {
+                $html .= '<button type="button" class="variation-option ' . $button_class . ' ' . $selected_class . '" data-option="' . $option_slug . '" ' . $disabled_attr . '>' . esc_html( $option ) . '</button>';
+            }
+        }
 
         $html .= '</div>';
 
         // Output the hidden select field for WooCommerce compatibility
         $html .= '<select name="' . esc_attr( $name ) . '" style="display: none;" data-attribute_name="attribute_' . esc_attr( sanitize_title( $attribute ) ) . '">';
-        $html .= '<option value="">' . esc_html( $show_option_none_text ) . '</option>';
+        $html .= '<option value="">' . esc_html( $args['show_option_none'] ) . '</option>';
         foreach ( $options as $option ) {
-            $html .= '<option value="' . esc_attr( $option ) . '" ' . selected( $args['selected'], $option, false ) . '>' . esc_html( $option ) . '</option>';
+            $selected_attr = selected( $selected, $option, false );
+            $html .= '<option value="' . esc_attr( $option ) . '" ' . $selected_attr . '>' . esc_html( $option ) . '</option>';
         }
-		
         $html .= '</select>';
 
         echo apply_filters( 'woocommerce_variation_attribute_buttons_html', $html, $args );
@@ -296,29 +329,98 @@ function is_color_option($attribute) {
 
 function custom_variation_buttons_script() {
     wp_enqueue_script('jquery');
-    
+
     wp_add_inline_script('jquery', "
-        jQuery(document).ready(function($) {
-            // When a variation option button is clicked
-            $('.variation-option').on('click', function() {
-                var button = $(this);
-                var attribute_name = button.closest('.variation-buttons').data('attribute-name');
-                var selected_value = button.data('option');
+        jQuery(function($) {
+            const form = $('.variations_form');
 
-                // Update the selected variation text
-                $('#selected-option-' + attribute_name).text(selected_value);
+            if (typeof form.wc_variation_form !== 'undefined') {
+                form.wc_variation_form();
+            }
 
-                // Mark the clicked button as selected and update the hidden select field value
-                button.siblings().removeClass('selected');
-                button.addClass('selected');
-                
-                // Update the corresponding hidden select field value
-                var selectField = $('select[name=\"attribute_' + attribute_name + '\"]');
-                selectField.val(selected_value).trigger('change');
-                
-                // Trigger WooCommerce variation updates
-                $(document.body).trigger('wc_variation_form');
+            // Utility function to convert attribute slug to readable label
+            function attributeLabel(attributeSlug) {
+                switch (attributeSlug) {
+                    case 'color': return 'Color';
+                    case 'size': return 'Size';
+                    case 'button-type': return 'Button Type';
+                    default: return attributeSlug.charAt(0).toUpperCase() + attributeSlug.slice(1);
+                }
+            }
+
+            // === Restore previous selection from sessionStorage ===
+            const savedSelection = sessionStorage.getItem('variationSelection');
+            if (savedSelection) {
+                const attributes = JSON.parse(savedSelection);
+                for (const attribute in attributes) {
+                    const value = attributes[attribute];
+                    const select = $('select[name=\"attribute_' + attribute + '\"]');
+                    const button = $('.variation-buttons[data-attribute-name=\"' + attribute + '\"] .variation-option[data-option=\"' + value + '\"]');
+
+                    if (select.length && button.length && !button.prop('disabled')) {
+                        select.val(value).trigger('change');
+                        button.addClass('selected');
+                        // === [New] Update label ===
+                        const label = button.closest('.variation-buttons').find('.variation-label');
+                        if (label.length) {
+                            label.text(attributeLabel(attribute) + ': ' + value);
+                        }
+                    }
+                }
+                sessionStorage.removeItem('variationSelection');
+                form.trigger('woocommerce_variation_select_change');
+                form.trigger('check_variations');
+            }
+
+            // === Save current selection before add-to-cart ===
+            form.on('submit', function() {
+                const selection = {};
+                form.find('select').each(function() {
+                    const attr = $(this).attr('name').replace('attribute_', '');
+                    const val = $(this).val();
+                    if (val) {
+                        selection[attr] = val;
+                    }
+                });
+                sessionStorage.setItem('variationSelection', JSON.stringify(selection));
             });
+
+            // === Handle custom button clicks ===
+            $('.variation-option').on('click', function() {
+                const button = $(this);
+                if (button.prop('disabled')) return;
+
+                const wrapper = button.closest('.variation-buttons');
+                const attribute = wrapper.data('attribute-name');
+                const value = button.data('option');
+                const select = $('select[name=\"attribute_' + attribute + '\"]');
+
+                wrapper.find('.variation-option').removeClass('selected');
+                button.addClass('selected');
+                select.val(value).trigger('change');
+
+                // Update visible label
+                const labelSpan = $('#selected-option-' + attribute);
+                if (labelSpan.length) {
+                    labelSpan.text(value).show();
+                }
+
+                form.trigger('woocommerce_variation_select_change');
+                form.trigger('check_variations');
+            });
+
+            // === Auto-select only if no previous selection is stored ===
+            if (!savedSelection) {
+                setTimeout(function() {
+                    form.find('.variation-buttons').each(function() {
+                        const wrapper = $(this);
+                        const firstAvailable = wrapper.find('.variation-option:not([disabled])').first();
+                        if (firstAvailable.length) {
+                            firstAvailable.trigger('click');
+                        }
+                    });
+                }, 300);
+            }
         });
     ");
 }
