@@ -1150,10 +1150,9 @@ table.wc-block-cart-items .wc-block-cart-items__row,
 }
 
 .slider-button {
-	@apply flex h-[30px] w-[30px] flex-row items-center justify-center font-sans text-[16px] font-bold tracking-[0.16px] text-black;
+	@apply bg-primary flex h-[30px] w-[30px] flex-row items-center justify-center font-sans text-[16px] font-bold tracking-[0.16px] text-white;
 	border: none;
 	cursor: pointer;
-	background-color: transparent !important;
 	font-size: 24px;
 }
 
