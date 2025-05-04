@@ -51,8 +51,16 @@ $wrapper_classes   = apply_filters(
 
 				<!-- Slider Controls -->
 				<div class="slider-controls">
-					<button id="prev-slide" class="slider-button"><svg class="-rotate-90 scale-200" data-name="1-Arrow Up" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 32 32"><path d="m26.71 10.29-10-10a1 1 0 0 0-1.41 0l-10 10 1.41 1.41L15 3.41V32h2V3.41l8.29 8.29z"/></svg></button>
-					<button id="next-slide" class="slider-button"><svg class="rotate-90 scale-200" data-name="1-Arrow Up" xmlns="http://www.w3.org/2000/svg" fill="#fff" viewBox="0 0 32 32"><path d="m26.71 10.29-10-10a1 1 0 0 0-1.41 0l-10 10 1.41 1.41L15 3.41V32h2V3.41l8.29 8.29z"/></svg></button>
+					<button id="prev-slide" class="slider-button">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" class="slider-icon">
+							<path d="M15.41 16.59 10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
+						</svg>
+					</button>
+					<button id="next-slide" class="slider-button">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" class="slider-icon">
+							<path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+						</svg>
+					</button>
 				</div>
 			</div>
 

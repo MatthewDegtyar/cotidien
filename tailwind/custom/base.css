@@ -1149,13 +1149,6 @@ table.wc-block-cart-items .wc-block-cart-items__row,
 	@apply absolute top-[calc(50%-50px)] mt-2 flex w-full flex-row items-center justify-between gap-1 self-center px-2;
 }
 
-.slider-button {
-	@apply bg-primary flex h-[30px] w-[30px] flex-row items-center justify-center font-sans text-[16px] font-bold tracking-[0.16px] text-white;
-	border: none;
-	cursor: pointer;
-	font-size: 24px;
-}
-
 .slider-button:hover {
 	@apply brightness-90;
 }
@@ -1228,11 +1221,24 @@ table.wc-block-cart-items .wc-block-cart-items__row,
 }
 
 .slider-button {
-	background-color: rgba(0, 0, 0, 1);
-	color: #fff;
-	border: none;
-	padding: 10px;
+	background-color: rgba(0, 0, 0, 0.4);
+	/* semi-transparent dark grey */
+	padding: 2px;
+	/* compact padding */
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.slider-button:hover {
+	background-color: rgba(64, 64, 64, 0.6);
 	cursor: pointer;
+}
+
+.slider-icon {
+	width: 18px;
+	height: 18px;
 }
 
 .slider-thumbnails {
