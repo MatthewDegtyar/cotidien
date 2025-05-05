@@ -240,7 +240,7 @@ textarea {
 
 /* Tailwind-based styling for the product description */
 .product-description-after-variation {
-	@apply mt-8 w-[400px] break-words;
+	@apply mt-8 lg:w-[400px] break-words;
 	/* Tailwind classes to control width and text wrapping */
 }
 
