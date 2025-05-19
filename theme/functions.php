@@ -764,67 +764,6 @@ function custom_checkout_inline_style() {
 	}
 }
 
-// Add additional review fields - TODO THIS REQUIRES UPDATING, FORM CURRENTLY IS HIDDEN UNLESS IF USER IS LOGGED IN
-add_filter('woocommerce_product_review_comment_form_args', 'cotidien_custom_review_form_fields');
-function cotidien_custom_review_form_fields($comment_form) {
-    // Custom fields to add - as an array of field_name => HTML string
-    $custom_fields = [
-        'comment_title' => '
-            <p class="comment-form-comment-title">
-                <label for="comment_title">Title</label>
-                <input id="comment_title" name="comment_title" type="text" />
-            </p>',
-
-        'fit' => '
-            <p class="comment-form-fit">
-                <label for="fit">Fit</label>
-                <input id="fit" name="fit" type="text" />
-            </p>',
-
-        'usual_size' => '
-            <p class="comment-form-usual-size">
-                <label for="usual_size">Usual Size</label>
-                <input id="usual_size" name="usual_size" type="text" />
-            </p>',
-
-        'size_purchased' => '
-            <p class="comment-form-size-purchased">
-                <label for="size_purchased">Size Purchased</label>
-                <input id="size_purchased" name="size_purchased" type="text" />
-            </p>',
-
-        'height' => '
-            <p class="comment-form-height">
-                <label for="height">Height</label>
-                <input id="height" name="height" type="text" />
-            </p>',
-    ];
-
-    // Merge your custom fields with existing fields
-    $comment_form['fields'] = array_merge($custom_fields, $comment_form['fields']);
-
-    // Replace default comment field with textarea and label
-    $comment_form['comment_field'] = '
-        <p class="comment-form-comment">
-            <label for="comment">Review</label>
-            <textarea id="comment" name="comment" cols="45" rows="6" required></textarea>
-        </p>';
-
-    return $comment_form;
-}
-
-// TODO: Update this so that new review fields are saved
-add_action('comment_post', 'cotidien_save_review_fields');
-function cotidien_save_review_fields($comment_id) {
-    $fields = ['comment_title', 'fit', 'usual_size', 'size_purchased', 'height'];
-
-    foreach ($fields as $field) {
-        if (isset($_POST[$field])) {
-            add_comment_meta($comment_id, $field, sanitize_text_field($_POST[$field]));
-        }
-    }
-}
-
 // Custom display for reviews
 function cotidien_review_display( $comment, $args, $depth ) {
     $rating         = (int) get_comment_meta( $comment->comment_ID, 'rating', true );
