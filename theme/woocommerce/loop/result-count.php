@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<?php
 	// phpcs:disable WordPress.Security
 	if ( 1 === intval( $total ) ) {
-		_e( 'Showing the single result', 'woocommerce' );
+		// _e( 'Showing the single result', 'woocommerce' );
 	} elseif ( $total <= $per_page || -1 === $per_page ) {
 		$orderedby_placeholder = empty( $orderedby ) ? '%2$s' : '<span class="screen-reader-text">%2$s</span>';
 		/* translators: 1: total results 2: sorted by */

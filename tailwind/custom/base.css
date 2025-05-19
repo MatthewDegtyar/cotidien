@@ -1466,3 +1466,112 @@ table.wc-block-cart-items .wc-block-cart-items__row,
 		font-size: 16px;
 	}
 }
+
+/* Reviews component
+   -------------------------------------------------- */
+
+/* Rating star styling */
+.woocommerce-product-rating a.woocommerce-review-link>span:first-child {
+	text-decoration: none !important;
+	/* force no underline on stars */
+	display: inline-block;
+	vertical-align: baseline;
+	margin-bottom: -1px;
+	/* keep stars on same line as text */
+}
+
+.review {
+	border-bottom: 1px solid #e5e7eb;
+	padding-bottom: 1rem;
+	margin-bottom: 1.5rem;
+	font-size: 0.875rem;
+	color: #1f2937;
+}
+
+.review__title {
+	font-weight: 600;
+	/* font‑semibold */
+	font-size: 1rem;
+	/* text‑base */
+	margin-bottom: 0.25rem;
+}
+
+.review__stars {
+	margin-bottom: 0.5rem;
+	color: #000000;
+	letter-spacing: 0.05em;
+	/* optional spacing */
+}
+
+.review__meta {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 0.5rem;
+	color: #6b7280;
+	/* gray‑500 */
+}
+
+.review__meta li+li {
+	margin-top: 0.25rem;
+}
+
+.review__content {
+	color: #374151;
+	/* gray‑700 */
+	margin-bottom: 0.25rem;
+}
+
+.review__footer {
+	font-size: 0.75rem;
+	/* text‑xs */
+	color: #9ca3af;
+	/* gray‑400 */
+}
+
+.custom-no-reviews {
+	padding: 1.5rem 0;
+	font-size: 0.95rem;
+	color: #555;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+#product-reviews {
+	display: block !important;
+	opacity: 1 !important;
+	visibility: visible !important;
+}
+
+.woocommerce-verification-required {
+	font-size: 0.85rem;
+	vertical-align: middle;
+}
+
+/* Extra space under the reviews heading */
+.woocommerce .woocommerce-Reviews .woocommerce-Reviews-title {
+	margin-bottom: 1.5rem;
+}
+
+/* Reformation‑inspired banner */
+.ref-banner {
+	--bg: #f9f6cd;
+	/* soft neutral */
+	--text: #1d1d1d;
+	/* near‑black */
+
+	background: var(--bg);
+	color: var(--text);
+	padding: 1rem 1.25rem;
+	text-align: center;
+	font-size: 0.9375rem;
+	/* 15 px */
+	letter-spacing: 0.02em;
+	text-transform: lowercase;
+	font-weight: 600;
+	border-bottom: 2px solid var(--accent);
+	margin-bottom: 2.25rem;
+	border-radius: 6px;
+	/* soft corners */
+}

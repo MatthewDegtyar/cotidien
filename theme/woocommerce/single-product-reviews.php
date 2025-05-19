@@ -24,24 +24,32 @@ if ( ! comments_open() ) {
 }
 
 ?>
+<div id="product-reviews">
 <div id="reviews" class="woocommerce-Reviews">
 	<div id="comments">
 		<h2 class="woocommerce-Reviews-title">
 			<?php
 			$count = $product->get_review_count();
 			if ( $count && wc_review_ratings_enabled() ) {
-				/* translators: 1: reviews count 2: product name */
-				$reviews_title = sprintf( esc_html( _n( '%1$s review for %2$s', '%1$s reviews for %2$s', $count, 'woocommerce' ) ), esc_html( $count ), '<span>' . get_the_title() . '</span>' );
-				echo apply_filters( 'woocommerce_reviews_title', $reviews_title, $count, $product ); // WPCS: XSS ok.
+				$reviews_title = sprintf(
+					/* translators: %s: reviews count */
+					esc_html__( 'Reviews (%s)', 'woocommerce' ),
+					esc_html( $count )
+				);
+				echo apply_filters( 'woocommerce_reviews_title', $reviews_title, $count, $product );
 			} else {
 				esc_html_e( 'Reviews', 'woocommerce' );
-			}
+			}			
 			?>
 		</h2>
 
 		<?php if ( have_comments() ) : ?>
 			<ol class="commentlist">
-				<?php wp_list_comments( apply_filters( 'woocommerce_product_review_list_args', array( 'callback' => 'woocommerce_comments' ) ) ); ?>
+				<?php wp_list_comments( [
+						'callback' => 'cotidien_review_display',
+						'type'     => 'review',
+					] );
+					; ?>
 			</ol>
 
 			<?php
@@ -140,8 +148,9 @@ if ( ! comments_open() ) {
 			</div>
 		</div>
 	<?php else : ?>
-		<p class="woocommerce-verification-required"><?php esc_html_e( 'Only logged in customers who have purchased this product may leave a review.', 'woocommerce' ); ?></p>
+		<p class="woocommerce-verification-required"><?php esc_html_e( 'Logged in and have this in your closet? We’d love to hear your thoughts.' ); ?></p>
 	<?php endif; ?>
 
 	<div class="clear"></div>
+</div>
 </div>

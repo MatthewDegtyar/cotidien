@@ -27,12 +27,7 @@ $bottom_header = get_theme_mod('home_header_img', $default_img);
 
 	<section id="primary">
 		<main id="main">
-			<div class="flex flex-col main-content-width mb-4 lg:mb-[50px]">
-				<h2 class="cus-page-title">New In</h2>
-				<?php echo do_shortcode('[products limit="4" orderby="date" order="DESC" visibility="visible" stock_status="instock"]'); ?>
-			</div>
-
-			<div class="flex flex-col relative">
+		<div class="flex flex-col relative">
 				<!-- Image: absolutely positioned, but matches height/width of content -->
 				<div class="absolute top-0 left-0 w-full h-full z-10">
 					<img 
@@ -64,6 +59,11 @@ $bottom_header = get_theme_mod('home_header_img', $default_img);
 					</a>
 					</div>
 				</div>
+			</div>
+
+			<div class="flex flex-col main-content-width mb-4 lg:mb-[50px]">
+				<h2 class="cus-page-title my-5">New In</h2>
+				<?php echo do_shortcode('[products limit="4" orderby="date" order="DESC" visibility="visible" stock_status="instock"]'); ?>
 			</div>
 
 		</main><!-- #main -->

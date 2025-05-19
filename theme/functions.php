@@ -764,6 +764,122 @@ function custom_checkout_inline_style() {
 	}
 }
 
+// Add additional review fields - TODO THIS REQUIRES UPDATING, FORM CURRENTLY IS HIDDEN UNLESS IF USER IS LOGGED IN
+add_filter('woocommerce_product_review_comment_form_args', 'cotidien_custom_review_form_fields');
+function cotidien_custom_review_form_fields($comment_form) {
+    // Custom fields to add - as an array of field_name => HTML string
+    $custom_fields = [
+        'comment_title' => '
+            <p class="comment-form-comment-title">
+                <label for="comment_title">Title</label>
+                <input id="comment_title" name="comment_title" type="text" />
+            </p>',
+
+        'fit' => '
+            <p class="comment-form-fit">
+                <label for="fit">Fit</label>
+                <input id="fit" name="fit" type="text" />
+            </p>',
+
+        'usual_size' => '
+            <p class="comment-form-usual-size">
+                <label for="usual_size">Usual Size</label>
+                <input id="usual_size" name="usual_size" type="text" />
+            </p>',
+
+        'size_purchased' => '
+            <p class="comment-form-size-purchased">
+                <label for="size_purchased">Size Purchased</label>
+                <input id="size_purchased" name="size_purchased" type="text" />
+            </p>',
+
+        'height' => '
+            <p class="comment-form-height">
+                <label for="height">Height</label>
+                <input id="height" name="height" type="text" />
+            </p>',
+    ];
+
+    // Merge your custom fields with existing fields
+    $comment_form['fields'] = array_merge($custom_fields, $comment_form['fields']);
+
+    // Replace default comment field with textarea and label
+    $comment_form['comment_field'] = '
+        <p class="comment-form-comment">
+            <label for="comment">Review</label>
+            <textarea id="comment" name="comment" cols="45" rows="6" required></textarea>
+        </p>';
+
+    return $comment_form;
+}
+
+// TODO: Update this so that new review fields are saved
+add_action('comment_post', 'cotidien_save_review_fields');
+function cotidien_save_review_fields($comment_id) {
+    $fields = ['comment_title', 'fit', 'usual_size', 'size_purchased', 'height'];
+
+    foreach ($fields as $field) {
+        if (isset($_POST[$field])) {
+            add_comment_meta($comment_id, $field, sanitize_text_field($_POST[$field]));
+        }
+    }
+}
+
+// Custom display for reviews
+function cotidien_review_display( $comment, $args, $depth ) {
+    $rating         = (int) get_comment_meta( $comment->comment_ID, 'rating', true );
+    $stars          = str_repeat('★', $rating) . str_repeat('☆', 5 - $rating);
+
+    $fit            = get_comment_meta( $comment->comment_ID, 'fit', true );
+    $usual_size     = get_comment_meta( $comment->comment_ID, 'usual_size', true );
+    $size_purchased = get_comment_meta( $comment->comment_ID, 'size_purchased', true );
+    $height         = get_comment_meta( $comment->comment_ID, 'height', true );
+    $title          = get_comment_meta( $comment->comment_ID, 'comment_title', true );
+
+    ?>
+    <article class="review">
+        <?php if ( $title ) : ?>
+            <h3 class="review__title"><?= esc_html( $title ); ?></h3>
+        <?php endif; ?>
+
+        <div class="review__stars" aria-label="<?= $rating; ?> out of 5"><?= esc_html( $stars ); ?></div>
+
+        <ul class="review__meta">
+            <?php if ( $fit )            : ?><li><strong>Fit:</strong> <?= esc_html( $fit ); ?></li><?php endif; ?>
+            <?php if ( $usual_size )     : ?><li><strong>Usual Size:</strong> <?= esc_html( $usual_size ); ?></li><?php endif; ?>
+            <?php if ( $size_purchased ) : ?><li><strong>Size Purchased:</strong> <?= esc_html( $size_purchased ); ?></li><?php endif; ?>
+            <?php if ( $height )         : ?><li><strong>Height:</strong> <?= esc_html( $height ); ?></li><?php endif; ?>
+        </ul>
+
+        <p class="review__content"><?= esc_html( $comment->comment_content ); ?></p>
+        <p class="review__footer">
+            <span class="review__author"><?= esc_html( $comment->comment_author ); ?></span>
+            — <?= human_time_diff( strtotime( $comment->comment_date ), current_time( 'timestamp' ) ); ?> ago
+        </p>
+    </article>
+    <?php
+}
+
+// Update add to cart failure so that it's more user friendly
+add_filter( 'gettext', 'custom_add_to_cart_stock_error_notice', 10, 3 );
+function custom_add_to_cart_stock_error_notice( $translated, $text, $domain ) {
+
+    if ( $text === 'You cannot add that amount to the cart &mdash; we have %1$s in stock and you already have %2$s in your cart.' && 'woocommerce' === $domain ) {
+        $translated = __("Looks like we don’t have enough in stock to add that many to your cart right now.", $domain );
+    }
+
+    return $translated;
+}
+
+add_action( 'woocommerce_before_shop_loop', 'cotidien_new_styles_banner', 5 );
+function cotidien_new_styles_banner() {
+    if ( is_shop() ) {
+        echo '<div class="ref-banner">
+                 <a href="#newsletter" class="ref-link">More looks dropping soon — join the newsletter to see them first</a>
+              </div>';
+    }
+}
+
 
 add_action('wp_enqueue_scripts', 'custom_variation_buttons_script');
 

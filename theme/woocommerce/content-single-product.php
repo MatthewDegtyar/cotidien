@@ -71,8 +71,8 @@ if ( post_password_required() ) {
 
 			<!-- Modal Structure -->
 			<div id="size-guide-modal" class="fixed inset-0 flex justify-center items-center hidden z-50">
-				<div class="bg-white p-6 w-96">
-					<h3 class="text-xl font-bold">Size Guide</h3>
+				<div class="bg-white p-6 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl" style="position: relative;">
+					<h3 class="text-l font-bold">Size Guide</h3>
 					<table class="mt-4 w-full table-fixed border-collapse">
 					<thead>
 						<tr>
@@ -80,6 +80,7 @@ if ( post_password_required() ) {
 						<th class="border-b px-4 py-2 text-center">XS (in)</th>
 						<th class="border-b px-4 py-2 text-center">S (in)</th>
 						<th class="border-b px-4 py-2 text-center">M (in)</th>
+						<th class="border-b px-4 py-2 text-center">L (in)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -88,27 +89,31 @@ if ( post_password_required() ) {
 						<td class="border-b px-4 py-2 text-center">30-32</td>
 						<td class="border-b px-4 py-2 text-center">32-34</td>
 						<td class="border-b px-4 py-2 text-center">34-36</td>
+						<td class="border-b px-4 py-2 text-center">37-39</td>
 						</tr>
 						<tr>
 						<th scope="row" class="border-b px-4 py-2 text-center">Waist</th>
 						<td class="border-b px-4 py-2 text-center">23-24</td>
 						<td class="border-b px-4 py-2 text-center">25-26</td>
 						<td class="border-b px-4 py-2 text-center">27-28</td>
+						<td class="border-b px-4 py-2 text-center">29-31</td>
 						</tr>
 						<tr>
 						<th scope="row" class="border-b px-4 py-2 text-center">Hip</th>
 						<td class="border-b px-4 py-2 text-center">33-35</td>
 						<td class="border-b px-4 py-2 text-center">35-37</td>
 						<td class="border-b px-4 py-2 text-center">37-39</td>
+						<td class="border-b px-4 py-2 text-center">40-42</td>
 						</tr>
 					</tbody>
 					</table>
 
 
 					<!-- Close button inside the modal, which unchecks the checkbox -->
-					<label for="size-guide-toggle" class="text-white bg-black px-4 py-1 cursor-pointer">
-						Close
+					<label for="size-guide-toggle" class="text-black cursor-pointer" style="position: absolute; top: 0; right: 0.5rem; padding: 0.3rem; cursor: pointer;">
+						&times;
 					</label>
+
 				</div>
 			</div>
 			<?php
