@@ -47,7 +47,7 @@
 			<span class="font-cormorant text-[18px] mb-6">Subscribe to our Newsletter</span>
 
 			<form action="#" method="POST" class="custom-newsletter-form">
-			<input type="hidden" name="form_id" value="cotidien-form-newsletter2">
+			<input type="hidden" name="form_id" value="cotidien-form-newsletter">
 			<div class="flex flex-row w-full justify-between">
 				<input type="email" name="email" class="outline-none text-[14px] w-full" placeholder="Your Email" required />
 				<button type="submit" class="uppercase text-[14px] hover:underline cursor-pointer">Subscribe</button>

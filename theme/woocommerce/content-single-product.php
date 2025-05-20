@@ -65,7 +65,7 @@ if ( post_password_required() ) {
 			<input type="checkbox" id="size-guide-toggle" class="hidden">
 
 			<!-- Button to trigger checkbox change -->
-			<label for="size-guide-toggle" class="text-sm font-bold underline hover:underline">
+			<label for="size-guide-toggle" class="text-sm font-bold underline hover:underline cursor-pointer">
 				Size guide
 			</label>
 

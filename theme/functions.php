@@ -425,9 +425,9 @@ function custom_variation_buttons_script() {
     ");
 }
 
-
-
-
+add_action('wp_footer', function() {
+    show_waitlist_overlay_form();
+});
 
 // Hook to capture all form submissions
 function track_form_submission() {
