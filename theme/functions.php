@@ -9,7 +9,7 @@
 
 if ( ! defined( 'COTIDIEN_VERSION' ) ) {
 	/*
-	 * Set the theme’s version number.
+	 * Set the theme's version number.
 	 *
 	 * This is used primarily for cache busting. If you use `npm run bundle`
 	 * to create your production build, the value below will be replaced in the
@@ -30,10 +30,10 @@ if ( ! defined( 'COTIDIEN_TYPOGRAPHY_CLASSES' ) ) {
 	 * For the block editor, these classes are converted to a JavaScript array
 	 * and then used by the `./javascript/block-editor.js` file, which adds
 	 * them to the appropriate elements in the block editor (and adds them
-	 * again when they’re removed.)
+	 * again when they're removed.)
 	 *
 	 * For the classic editor (and anything using TinyMCE, like Advanced Custom
-	 * Fields), these classes are added to TinyMCE’s body class when it
+	 * Fields), these classes are added to TinyMCE's body class when it
 	 * initializes.
 	 */
 	define(
@@ -425,6 +425,53 @@ function custom_variation_buttons_script() {
     ");
 }
 
+function show_waitlist_overlay_form() {
+	?>
+	<div id="waitlist-overlay" style="
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.5);
+		backdrop-filter: blur(5px);
+		display: none;
+		align-items: center;
+		justify-content: center;
+		z-index: 9999;
+	">
+		<div style="
+			position: relative;
+			background: white;
+			padding: 3rem;
+			box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+			max-width: 90%;
+			width: 400px;
+		">
+			<button id="close-waitlist-overlay" style="
+				position: absolute;
+				top: 0.5rem;
+				right: 0.75rem;
+				background: none;
+				border: none;
+				font-size: 1.5rem;
+				cursor: pointer;
+				line-height: 1;
+			">×</button>
+
+			<form action="#" method="POST" class="custom-newsletter-form flex flex-col">
+				<input type="hidden" name="form_id" value="cotidien-form-waitlist">
+				<div class="flex flex-col gap-4 items-center">
+					<div class="text-center">
+						<h3 class="font-cormorant text-[24px] mb-3">Join the waitlist</h3>
+						<p class="font-jakarta text-[10px] text-gray-600">We'll notify you when this item is back in stock</p>
+					</div>
+					<input type="email" name="email" class="w-full h-[50px] px-4 border border-black outline-none text-[14px]" placeholder="Your Email" required />
+					<button type="submit" class="w-full h-[50px] bg-black text-white text-[14px] font-light border border-black hover:bg-white hover:text-black transition-colors">Notify me when available</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<?php
+}
+
 add_action('wp_footer', function() {
     show_waitlist_overlay_form();
 });
@@ -804,7 +851,7 @@ add_filter( 'gettext', 'custom_add_to_cart_stock_error_notice', 10, 3 );
 function custom_add_to_cart_stock_error_notice( $translated, $text, $domain ) {
 
     if ( $text === 'You cannot add that amount to the cart &mdash; we have %1$s in stock and you already have %2$s in your cart.' && 'woocommerce' === $domain ) {
-        $translated = __("Looks like we don’t have enough in stock to add that many to your cart right now.", $domain );
+        $translated = __("Looks like we don't have enough in stock to add that many to your cart right now.", $domain );
     }
 
     return $translated;

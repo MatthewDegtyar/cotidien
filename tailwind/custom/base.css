@@ -1,7 +1,7 @@
 @import "./woocommerce.css";
 
 /**
- * Custom styles to immediately follow Tailwind’s `base` layer
+ * Custom styles to immediately follow Tailwind's `base` layer
  */
 
 /**
@@ -90,7 +90,7 @@ textarea {
 	cursor: pointer;
 	font-size: 14px;
 	text-align: center;
-	border: 1px solid #ddd;
+	border: 1px solid #101010;
 	color: white;
 	transition: background-color 0.3s;
 }
@@ -1574,4 +1574,15 @@ html {
 	margin-bottom: 2.25rem;
 	border-radius: 6px;
 	/* soft corners */
+}
+
+/* Footer Logo Visibility - Cotidien is not visible on mobile */
+a.footer-logo {
+	display: none !important;
+}
+
+@media screen and (min-width: 1024px) {
+	a.footer-logo {
+		display: inline !important;
+	}
 }

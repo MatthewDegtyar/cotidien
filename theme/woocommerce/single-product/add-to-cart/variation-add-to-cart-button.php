@@ -37,7 +37,7 @@ global $product;
 	<button type="button" id="debug-button"
 		class=" button alt"
 		style="display:none; background: #000;">
-		Join Waitlist
+		Join the waitlist
 	</button>
 
 	<?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
@@ -60,6 +60,22 @@ global $product;
 
     if (!variationForm || !container || !realButton || !waitlistButton) return;
 
+    // Add CSS for out-of-stock styling
+    const style = document.createElement('style');
+    style.textContent = `
+        .variation-option[data-available="false"] {
+            opacity: 0.3;
+            cursor: pointer !important;
+        }
+        .variation-option[data-available="false"]:hover {
+            opacity: 0.4;
+        }
+        .variation-option[data-available="false"].selected {
+            opacity: 0.5;
+        }
+    `;
+    document.head.appendChild(style);
+
     // Modal logic
     waitlistButton.addEventListener('click', function () {
         waitlistOverlay.style.display = 'flex';
@@ -69,79 +85,99 @@ global $product;
         waitlistOverlay.style.display = 'none';
     });
     
+    // Close modal when clicking outside
+    waitlistOverlayBG.addEventListener('click', function(e) {
+        if (e.target === waitlistOverlayBG) {
+            waitlistOverlay.style.display = 'none';
+        }
+    });
 
     if (waitlistOverlay) {
         document.body.insertBefore(waitlistOverlay, document.body.firstChild);
     }
 
-	// EDITS: 1. Moved contact form outside of product add to cart form
+    // Function to update button availability
+    function updateButtonAvailability(variations) {
+        const buttons = document.querySelectorAll('.variation-option');
+        const currentSelections = {};
+        
+        // Get current selections
+        variationForm.querySelectorAll('select').forEach(select => {
+            currentSelections[select.name] = select.value;
+        });
 
-    // Handle variation state
-    const updateButtons = () => {
-        if (container.classList.contains('woocommerce-variation-add-to-cart-disabled')) {
-            realButton.style.display = 'none';
-            waitlistButton.style.display = 'inline-block';
-        } else {
+        // Enable all buttons first
+        buttons.forEach(button => {
+            button.removeAttribute('disabled');
+            const wrapper = button.closest('.variation-buttons');
+            if (wrapper) {
+                const attributeName = 'attribute_' + wrapper.dataset.attributeName;
+                const optionValue = button.dataset.option;
+                
+                // Check if this option is available in any variation
+                let isAvailable = false;
+                for (let variation of variations) {
+                    if (variation.attributes[attributeName] === optionValue || variation.attributes[attributeName] === "") {
+                        let matchesOtherAttributes = true;
+                        // Check if other selected attributes match this variation
+                        for (let attr in currentSelections) {
+                            if (attr !== attributeName && 
+                                currentSelections[attr] && 
+                                variation.attributes[attr] !== "" && 
+                                variation.attributes[attr] !== currentSelections[attr]) {
+                                matchesOtherAttributes = false;
+                                break;
+                            }
+                        }
+                        if (matchesOtherAttributes && variation.is_in_stock && variation.max_qty > 0) {
+                            isAvailable = true;
+                            break;
+                        }
+                    }
+                }
+                
+                button.setAttribute('data-available', isAvailable.toString());
+            }
+        });
+    }
+
+    // Handle variation availability
+    if (variationForm) {
+        // Get variations data
+        const variationsData = JSON.parse(variationForm.dataset.product_variations || '[]');
+        
+        // Initial update
+        updateButtonAvailability(variationsData);
+
+        // Update on selection change
+        jQuery(variationForm).on('woocommerce_variation_select_change', function() {
+            updateButtonAvailability(variationsData);
+        });
+
+        jQuery(variationForm).on('found_variation', function(event, variation) {
+            if (!variation.is_in_stock || variation.max_qty === 0) {
+                realButton.style.display = 'none';
+                waitlistButton.style.display = 'inline-block';
+            } else {
+                realButton.style.display = 'inline-block';
+                waitlistButton.style.display = 'none';
+            }
+        });
+
+        // Handle when no variation is found or reset
+        jQuery(variationForm).on('reset_data', function() {
             realButton.style.display = 'inline-block';
             waitlistButton.style.display = 'none';
-        }
-    };
+            updateButtonAvailability(variationsData);
+        });
+    }
 
-    new MutationObserver(updateButtons).observe(container, {
-        attributes: true,
-        attributeFilter: ['class']
-    });
-
-    updateButtons();
+    // Initial state
+    if (container.classList.contains('woocommerce-variation-add-to-cart-disabled')) {
+        realButton.style.display = 'none';
+        waitlistButton.style.display = 'inline-block';
+    }
 });
-
 </script>
 
-
-<?php 
-function show_waitlist_overlay_form() {
-	?>
-	<div id="waitlist-overlay" style="
-		position: fixed;
-		inset: 0;
-		background: rgba(0, 0, 0, 0.5);
-		backdrop-filter: blur(5px);
-		display: none;
-		align-items: center;
-		justify-content: center;
-		z-index: 9999;
-	">
-		<div style="
-			position: relative;
-			background: white;
-			padding: 2rem;
-			border-radius: 8px;
-			box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-			max-width: 90%;
-			width: 400px;
-		">
-			<button id="close-waitlist-overlay" style="
-				position: absolute;
-				top: 0.5rem;
-				right: 0.75rem;
-				background: none;
-				border: none;
-				font-size: 1.5rem;
-				cursor: pointer;
-				line-height: 1;
-			">×</button>
-
-			<form action="#" method="POST" class="custom-newsletter-form">
-				<input type="hidden" name="form_id" value="cotidien-form-waitlist">
-				<div class="flex flex-row w-full justify-between">
-					<input type="email" name="email" class="outline-none text-[14px] w-full" placeholder="Your Email" required />
-					<button type="submit" class="uppercase text-[14px] hover:underline cursor-pointer">Subscribe</button>
-				</div>
-				<div class="h-[1px] w-[340px] lg:w-[430px] bg-black mt-2"></div>
-			</form>
-		</div>
-	</div>
-	<?php
-}
-
-?>
+<?php ?>

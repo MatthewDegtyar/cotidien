@@ -104,12 +104,12 @@
 
 </script>
 
-<div class="antialiased font-jakarta" id="page">
-	<div class="w-full main-content-width h-[164px] flex flex-row items-center">
-		<div class="w-full flex flex-row justify-between lg:justify-normal">
+<header id="masthead" class="fixed top-0 left-0 right-0 z-50 bg-white">
+	<div class="main-content-width h-[80px] lg:h-[120px] flex flex-row items-center">
+		<div class="w-full flex flex-row justify-between items-center lg:justify-normal">
 
-			<a href="/"><span class="text-[40px] font-cormorant uppercase ">Cotidien</span></a>
-			<div class=" flex-row items-center w-full justify-between hidden lg:flex">
+			<a href="/" class="flex items-center"><span class="text-2xl lg:text-3xl font-cormorant uppercase tracking-wide">Cotidien</span></a>
+			<div class="flex-row items-center w-full justify-between hidden lg:flex">
 				<nav class="lg:flex flex-row gap-[48px] ml-[48px]">
 					<a href="/shop" class="nav-link">Shop</a>
 					<a href="/about" class="nav-link">About</a>
@@ -119,9 +119,7 @@
 				<div class="flex lg:hidden"></div>
 			</div>
 
-			<div class="flex flex-row items-center gap-8">
-
-
+			<div class="flex flex-row items-center gap-4 lg:gap-8">
 			<?php if ( ! is_cart() ) : ?>
 				<button id="cart-toggle" class="relative flex items-center cursor-pointer">
 					<!-- Inline SVG icon -->
@@ -149,8 +147,8 @@
 			<?php endif; ?>
 
 
-				<button id="menu-toggle" class="lg:hidden flex cursor-pointer">
-					<svg class="w-8 h-8 mt-[8px] text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+				<button id="menu-toggle" class="lg:hidden flex items-center cursor-pointer">
+					<svg class="w-6 h-6 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
 						<path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"/>
 					</svg>
 				</button>
@@ -158,6 +156,8 @@
 			</div>
 		</div>
 	</div>
+</header>
+<div class="h-[80px] lg:h-[120px]"></div>
 
 	<?php if ( ! is_cart() && function_exists( 'WC' ) ) : ?>
 	<div id="cart-view" class="cart-view">

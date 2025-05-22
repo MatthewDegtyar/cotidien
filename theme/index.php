@@ -47,12 +47,6 @@ $bottom_header = get_theme_mod('home_header_img', $default_img);
 					<br>
 					<p class="text-[16px] lg:text-[16px]" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);">"Cote" (꽃), the Korean word for flower, and "quotidien," the French word for everyday, reflect our mission: to create beautiful, elevated pieces that seamlessly fit into your wardrobe.</p>
 				
-					<!-- <h3 class="text-[24px] font-cormorant mt-8">Our Story</h3>
-					<p>Body text for whatever you’d like to say. Add main takeaway points, quotes, anecdotes.</p>
-
-					<h3 class="text-[24px] font-cormorant mt-8">Our Concept</h3>
-					<p>Body text for whatever you’d like to add more to the main point. It provides details, explanations, and context.</p> -->
-
 					<div class="mt-8">
 					<a href="/shop" class="font-cormorant bg-white text-[24px] text-black px-8 py-2 hover:brightness-75">
 						View Collection I
@@ -61,7 +55,7 @@ $bottom_header = get_theme_mod('home_header_img', $default_img);
 				</div>
 			</div>
 
-			<div class="flex flex-col main-content-width mb-4 lg:mb-[50px]">
+			<div class="flex flex-col main-content-width mb-4 lg:mb-[24px]">
 				<h2 class="cus-page-title my-5">New In</h2>
 				<?php echo do_shortcode('[products limit="4" orderby="date" order="DESC" visibility="visible" stock_status="instock"]'); ?>
 			</div>
