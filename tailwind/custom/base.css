@@ -1,4 +1,5 @@
 @import "./woocommerce.css";
+@import "./components/components.css"
 
 /**
  * Custom styles to immediately follow Tailwind's `base` layer
@@ -1751,6 +1752,11 @@ a.footer-logo {
 
 /* Hide breadcrumb on shop page */
 .post-type-archive-product .woocommerce-breadcrumb {
+	display: none !important;
+}
+
+/* Hide breadcrumb on product page */
+.single-product .woocommerce-breadcrumb {
 	display: none !important;
 }
 

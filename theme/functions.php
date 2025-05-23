@@ -1151,3 +1151,46 @@ add_action( 'wp_footer', function() {
     </script>
     <?php
 });
+
+// Add product gallery markup to single product page
+add_action('woocommerce_before_single_product_summary', 'custom_product_gallery_markup', 5);
+function custom_product_gallery_markup() {
+    if (!is_product()) return;
+
+    // Remove default gallery
+    remove_action('woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20);
+
+    global $product;
+    $attachment_ids = $product->get_gallery_image_ids();
+
+    // Add main image to beginning
+    array_unshift($attachment_ids, $product->get_image_id());
+
+    echo '<div class="custom-product-gallery-wrapper">';
+    echo '<div class="product-gallery">';
+    foreach ($attachment_ids as $index => $attachment_id) {
+        echo wp_get_attachment_image($attachment_id, 'large');
+    }
+    echo '</div>';
+
+    echo '<div class="gallery-indicators">';
+    foreach ($attachment_ids as $index => $attachment_id) {
+        echo '<span class="' . ($index === 0 ? 'active' : '') . '"></span>';
+    }
+    echo '</div>';
+    echo '</div>';
+
+    echo '<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const gallery = document.querySelector(".product-gallery");
+      const indicators = document.querySelectorAll(".gallery-indicators span");
+
+      gallery.addEventListener("scroll", () => {
+        const index = Math.round(gallery.scrollLeft / gallery.offsetWidth);
+        indicators.forEach((dot, i) => {
+          dot.classList.toggle("active", i === index);
+        });
+      });
+    });
+    </script>';
+}

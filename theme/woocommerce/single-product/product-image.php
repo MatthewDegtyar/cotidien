@@ -4,6 +4,12 @@
  *
  * This template can be overridden by copying it to yourtheme/woocommerce/single-product/product-image.php.
  *
+ * HOWEVER, on occasion WooCommerce will need to update template files and you
+ * (the theme developer) will need to copy the new files to your theme to
+ * maintain compatibility. We try to do this as little as possible, but it does
+ * happen. When this occurs the version of the template file will be bumped and
+ * the readme will list any important changes.
+ *
  * @see     https://woocommerce.com/document/template-structure/
  * @package WooCommerce\Templates
  * @version 9.7.0
@@ -12,6 +18,11 @@
 use Automattic\WooCommerce\Enums\ProductType;
 
 defined( 'ABSPATH' ) || exit;
+
+// Note: `wc_get_gallery_image_html` was added in WC 3.3.2 and did not exist prior. This check protects against theme overrides being used on older versions of WC.
+if ( ! function_exists( 'wc_get_gallery_image_html' ) ) {
+	return;
+}
 
 global $product;
 
@@ -27,80 +38,23 @@ $wrapper_classes   = apply_filters(
 	)
 );
 ?>
-
 <div class="<?php echo esc_attr( implode( ' ', array_map( 'sanitize_html_class', $wrapper_classes ) ) ); ?>" data-columns="<?php echo esc_attr( $columns ); ?>" style="opacity: 0; transition: opacity .25s ease-in-out;">
 	<div class="woocommerce-product-gallery__wrapper">
-		<div class="product-slider-wrapper">
-			<div class="product-slider">
-				<?php
-				// Get the main product image
-				if ($post_thumbnail_id) {
-					$main_image_url = wp_get_attachment_image_url($post_thumbnail_id, 'extralarge');
-					echo '<div class="slide"><img src="' . esc_url($main_image_url) . '" alt="' . esc_attr(get_post_meta($post_thumbnail_id, '_wp_attachment_image_alt', true)) . '"></div>';
-				}
+		<?php
+		if ( $post_thumbnail_id ) {
+			$html = wc_get_gallery_image_html( $post_thumbnail_id, true );
+		} else {
+			$wrapper_classname = $product->is_type( ProductType::VARIABLE ) && ! empty( $product->get_available_variations( 'image' ) ) ?
+				'woocommerce-product-gallery__image woocommerce-product-gallery__image--placeholder' :
+				'woocommerce-product-gallery__image--placeholder';
+			$html              = sprintf( '<div class="%s">', esc_attr( $wrapper_classname ) );
+			$html             .= sprintf( '<img src="%s" alt="%s" class="wp-post-image" />', esc_url( wc_placeholder_img_src( 'woocommerce_single' ) ), esc_html__( 'Awaiting product image', 'woocommerce' ) );
+			$html             .= '</div>';
+		}
 
-				// Get gallery images
-				$gallery_image_ids = $product->get_gallery_image_ids();
-				if ($gallery_image_ids && count($gallery_image_ids) > 0) {
-					foreach ($gallery_image_ids as $image_id) {
-						$image_url = wp_get_attachment_image_url($image_id, 'extralarge');
-						echo '<div class="slide"><img src="' . esc_url($image_url) . '" alt="' . esc_attr(get_post_meta($image_id, '_wp_attachment_image_alt', true)) . '"></div>';
-					}
-				}
-				?>
+		echo apply_filters( 'woocommerce_single_product_image_thumbnail_html', $html, $post_thumbnail_id ); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
 
-				<!-- Slider Controls -->
-				<div class="slider-controls">
-					<button id="prev-slide" class="slider-button">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" class="slider-icon">
-							<path d="M15.41 16.59 10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
-						</svg>
-					</button>
-					<button id="next-slide" class="slider-button">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" class="slider-icon">
-							<path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
-						</svg>
-					</button>
-				</div>
-			</div>
-
-		</div>
+		do_action( 'woocommerce_product_thumbnails' );
+		?>
 	</div>
 </div>
-
-<script>
-	document.addEventListener('DOMContentLoaded', function () {
-		const slides = document.querySelectorAll('.product-slider .slide');
-		const thumbnails = document.querySelectorAll('.slider-thumbnails .thumbnail');
-		const prevButton = document.getElementById('prev-slide');
-		const nextButton = document.getElementById('next-slide');
-
-		let currentSlide = 0;
-
-		function updateSlider() {
-			slides.forEach((slide, index) => {
-				slide.style.display = index === currentSlide ? 'block' : 'none';
-			});
-			thumbnails.forEach((thumbnail, index) => {
-				thumbnail.classList.toggle('active', index === currentSlide);
-			});
-		}
-
-		function goToSlide(index) {
-			currentSlide = (index + slides.length) % slides.length; // Handle wrapping
-			updateSlider();
-		}
-
-		// Event listeners for buttons
-		prevButton.addEventListener('click', () => goToSlide(currentSlide - 1));
-		nextButton.addEventListener('click', () => goToSlide(currentSlide + 1));
-
-		// Event listeners for thumbnails
-		thumbnails.forEach((thumbnail, index) => {
-			thumbnail.addEventListener('click', () => goToSlide(index));
-		});
-
-		// Initialize the slider
-		updateSlider();
-	});
-</script>
