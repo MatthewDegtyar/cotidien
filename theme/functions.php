@@ -208,6 +208,42 @@ function theme_customize_register($wp_customize) {
         'section' => 'home_section',
         'settings' => 'home_header_img',
     )));
+
+     //////// Section for Shop Page Images /////////
+     $wp_customize->add_section('shop_section', array(
+        'title' => __('Shop Page Images'),
+        'priority' => 30,
+    ));
+
+    // Image 1
+    $wp_customize->add_setting('shop_img_1', array(
+        'default' => 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8?q=80&w=3870&auto=format&fit=crop',
+    ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'shop_img_1', array(
+        'label' => __('Shop Image 1'),
+        'section' => 'shop_section',
+        'settings' => 'shop_img_1',
+    )));
+
+    // Image 2
+    $wp_customize->add_setting('shop_img_2', array(
+        'default' => 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8?q=80&w=3870&auto=format&fit=crop',
+    ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'shop_img_2', array(
+        'label' => __('Shop Image 2'),
+        'section' => 'shop_section',
+        'settings' => 'shop_img_2',
+    )));
+
+    // Image 3
+    $wp_customize->add_setting('shop_img_3', array(
+        'default' => 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8?q=80&w=3870&auto=format&fit=crop',
+    ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'shop_img_3', array(
+        'label' => __('Shop Image 3'),
+        'section' => 'shop_section',
+        'settings' => 'shop_img_3',
+    )));
 }
 add_action('customize_register', 'theme_customize_register');
 
@@ -1010,3 +1046,108 @@ require get_template_directory() . '/inc/template-tags.php';
  * Functions which enhance the theme by hooking into WordPress.
  */
 require get_template_directory() . '/inc/template-functions.php';
+
+// Add three images hero to shop page for desktop, one for mobile
+function add_three_image_hero_to_shop() {
+    if ( is_shop() ) {
+
+        $default_img = 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8?q=80&w=3870&auto=format&fit=crop';
+
+        $img1 = get_theme_mod('shop_img_1', $default_img);
+        $img2 = get_theme_mod('shop_img_2', $default_img);
+        $img3 = get_theme_mod('shop_img_3', $default_img);
+
+        ?>
+       <!-- Desktop Images -->
+        <div class="shop-hero-desktop">
+            <div class="hero-img-wrapper-desktop">
+                <img src="<?php echo esc_url($img1); ?>" alt="Hero Image 1" />
+            </div>
+            <div class="hero-img-wrapper-desktop">
+                <img src="<?php echo esc_url($img2); ?>" alt="Hero Image 2" />
+            </div>
+            <div class="hero-img-wrapper-desktop">
+                <img src="<?php echo esc_url($img3); ?>" alt="Hero Image 3" />
+            </div>
+            <div class="shop-hero-text-overlay">
+                Dress like a love letter
+            </div>
+            <a href="/product/margot-dress-ivory/" class="shop-hero-text-subtitle" aria-label="Go to products below">
+                unlock new chapters in your closet →</a>
+        </div>
+
+        <!-- Mobile Image -->
+        <div class="shop-hero-mobile">
+            <div class="hero-img-wrapper-mobile">
+                <img src="<?php echo esc_url($img3); ?>" alt="Hero Image 3" />
+            </div>
+            <div class="shop-hero-text-mobile-overlay">
+                Dress like a love letter
+            </div>
+            <a href="/product/margot-dress-ivory/" class="shop-hero-text-subtitle-mobile" aria-label="Go to products below">
+                unlock new chapters in your closet →</a>
+        </div>
+
+        <?php
+    }
+}
+add_action( 'woocommerce_before_main_content', 'add_three_image_hero_to_shop', 5 );
+
+
+/**
+ * Customize WooCommerce sorting options
+ */
+function customize_woocommerce_catalog_orderby( $sortby ) {
+    // Remove default options
+    unset($sortby['menu_order']); // Remove default sorting
+    unset($sortby['popularity']); // Remove popularity sorting
+    unset($sortby['rating']); // Remove rating sorting
+    unset($sortby['date']); // Remove date sorting
+
+    // Create new sorting array with desired order
+    $new_sortby = array(
+        'date' => 'Newest',
+        'popularity' => 'Bestsellers',
+        'price' => 'Price: Low to High',
+        'price-desc' => 'Price: High to Low'
+    );
+
+    return $new_sortby;
+}
+add_filter( 'woocommerce_catalog_orderby', 'customize_woocommerce_catalog_orderby' );
+
+// Change the aria-label attribute on the orderby select
+add_filter( 'woocommerce_catalog_orderby', function( $options ) {
+    // Leave options as is, unless you want to add custom options
+    return $options;
+} );
+
+// Wrap the orderby select in a div and add a span label after it
+add_action( 'wp_footer', function() {
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const orderingForm = document.querySelector('.woocommerce-ordering');
+        if (orderingForm) {
+            const select = orderingForm.querySelector('select.orderby');
+            if (select && !select.parentElement.classList.contains('select-wrapper')) {
+                // Wrap select in div.select-wrapper
+                const wrapper = document.createElement('div');
+                wrapper.className = 'select-wrapper';
+                select.parentNode.insertBefore(wrapper, select);
+                wrapper.appendChild(select);
+
+                // Add the span label after select
+                const spanLabel = document.createElement('span');
+                spanLabel.className = 'select-label';
+                spanLabel.textContent = 'Sort';
+                wrapper.appendChild(spanLabel);
+
+                // Modify aria-label on select
+                select.setAttribute('aria-label', 'Sort products');
+            }
+        }
+    });
+    </script>
+    <?php
+});
