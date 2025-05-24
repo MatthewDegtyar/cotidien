@@ -442,19 +442,29 @@ table.wc-block-cart-items .wc-block-cart-items__row,
 	vertical-align: top;
 }
 
-.is-medium table.wc-block-cart-items .wc-block-cart-items__row .wc-block-cart-item__quantity,
-.is-mobile table.wc-block-cart-items .wc-block-cart-items__row .wc-block-cart-item__quantity,
-.is-small table.wc-block-cart-items .wc-block-cart-items__row .wc-block-cart-item__quantity {
-	-ms-grid-row-align: end;
-	align-self: end;
-	-ms-grid-column: 1;
-	grid-column-start: 1;
-	-ms-grid-row: 2;
-	grid-row-start: 2;
-	padding-right: 0px !important;
-	padding-top: 0;
-	vertical-align: bottom;
+@media (max-width: 767px) {
+
+	/* Make cart item rows responsive on mobile */
+	table.wc-block-cart-items .wc-block-cart-items__row,
+	.is-small table.wc-block-cart-items .wc-block-cart-items__row {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		padding: 16px 0;
+		box-sizing: border-box;
+	}
+
+	/* Ensure quantity block stacks and aligns correctly */
+	.is-medium table.wc-block-cart-items .wc-block-cart-items__row .wc-block-cart-item__quantity,
+	.is-mobile table.wc-block-cart-items .wc-block-cart-items__row .wc-block-cart-item__quantity,
+	.is-small table.wc-block-cart-items .wc-block-cart-items__row .wc-block-cart-item__quantity {
+		grid-column-start: 1;
+		grid-row-start: 2;
+		align-self: end;
+		padding-right: 0;
+		padding-top: 0;
+	}
 }
+
 
 .wc-forward {
 	padding-top: 8px !important;
@@ -1576,6 +1586,26 @@ html {
 	/* soft corners */
 }
 
+.ref-banner {
+	--bg: #f9f6cd;
+	/* soft neutral */
+	--text: #1d1d1d;
+	/* near‑black */
+	background: var(--bg);
+	color: var(--text);
+	padding: 1rem 1.25rem;
+	text-align: center;
+	font-size: 0.9375rem;
+	/* 15 px */
+	letter-spacing: 0.02em;
+	text-transform: lowercase;
+	font-weight: 600;
+	border-bottom: 2px solid var(--accent);
+	margin-bottom: 1rem;
+	border-radius: 6px;
+	/* soft corners */
+}
+
 /* Footer Logo Visibility - Cotidien is not visible on mobile */
 a.footer-logo {
 	display: none !important;
@@ -1802,4 +1832,83 @@ form.woocommerce-ordering {
 	background-position: center !important;
 	pointer-events: none !important;
 	flex-shrink: 0 !important;
+}
+
+/* ===== MOBILE HERO VIDEO ===== */
+@media (max-width: 767px) {
+	.mobile-hero-video-wrapper {
+		display: block;
+		position: relative;
+		width: 100%;
+		height: auto;
+		overflow: hidden;
+	}
+
+	.mobile-hero-video {
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+	}
+
+	.video-text-overlay {
+		position: absolute;
+		inset: 0;
+		/* shorthand for top:0; right:0; bottom:0; left:0; */
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		color: white;
+		text-align: center;
+	}
+
+	.video-text-overlay h2 {
+		font-family: 'Cormorant Garamond';
+		/* make sure you have this font loaded */
+		font-size: 1.875rem;
+		/* text-3xl in Tailwind = 30px */
+		font-weight: 400;
+		/* Tailwind font-cormorant often uses normal weight */
+		margin: 0;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+	}
+
+	.video-text-overlay p {
+		margin-top: 0;
+		/* mt-4 */
+		font-size: 0.65rem;
+		/* text-lg */
+		max-width: 36rem;
+		/* max-w-xl = 576px */
+		line-height: 1.5;
+		font-weight: 200;
+		text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+	}
+
+	/* Hide desktop hero on mobile */
+	.desktop-hero-wrapper {
+		display: none !important;
+	}
+}
+
+/* ===== DESKTOP HERO IMAGE ===== */
+@media (min-width: 768px) {
+	.mobile-hero-video-wrapper {
+		display: none !important;
+	}
+
+	.desktop-hero-wrapper {
+		display: block;
+		position: relative;
+		width: 100%;
+		height: 50vh;
+		overflow: hidden;
+	}
+
+	.desktop-hero-wrapper img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
 }

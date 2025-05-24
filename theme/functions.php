@@ -244,6 +244,25 @@ function theme_customize_register($wp_customize) {
         'section' => 'shop_section',
         'settings' => 'shop_img_3',
     )));
+
+    //////// Section for Home Page Media /////////
+    $wp_customize->add_section('home_media_section', array(
+        'title' => __('Home Page Media'),
+        'priority' => 30,
+    ));
+
+    // Add setting for video URL
+    $wp_customize->add_setting('home_video_url', array(
+        'default' => 'https://cotidienlabel.com/wp-content/uploads/2025/05/mobile_720_version2_encoded.mp4',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    // Add control for the video URL (text input)
+    $wp_customize->add_control('home_video_url', array(
+        'label' => __('Home Page Video URL'),
+        'section' => 'home_media_section',
+        'type' => 'url', // url input type
+    ));
 }
 add_action('customize_register', 'theme_customize_register');
 

@@ -21,8 +21,6 @@
 
 <body <?php body_class(); ?>>
 
-
-
 <script>
 	document.addEventListener('DOMContentLoaded', () => {
 		// Mobile Nav Elements
@@ -105,8 +103,14 @@
 </script>
 
 <header id="masthead" class="fixed top-0 left-0 right-0 z-50 bg-white">
+	<div class="w-full bg-[#f9f6cd] text-black text-center py-2 text-xs sm:text-base font-medium tracking-wide">
+	Memorial Day Sale — <span class="underline">25% Off Sitewide</span> — code <strong>SUMMER25</strong>
+	</div>
+
+
 	<div class="main-content-width h-[80px] lg:h-[120px] flex flex-row items-center">
 		<div class="w-full flex flex-row justify-between items-center lg:justify-normal">
+
 
 			<a href="/" class="flex items-center"><span class="text-2xl lg:text-3xl font-cormorant uppercase tracking-wide">Cotidien</span></a>
 			<div class="flex-row items-center w-full justify-between hidden lg:flex">
@@ -157,7 +161,7 @@
 		</div>
 	</div>
 </header>
-<div class="h-[80px] lg:h-[120px]"></div>
+<div class="pt-[112px] lg:pt-[152px]"></div>
 
 	<?php if ( ! is_cart() && function_exists( 'WC' ) ) : ?>
 	<div id="cart-view" class="cart-view">
