@@ -14,7 +14,10 @@ get_header();
 
     <div class="space-y-12">
         <div>
-            <p>Cotidien Inc. ("Cotidien", "we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, share, and safeguard your personal information when you visit our website <a href="https://www.cotidienlabel.com">www.cotidienlabel.com</a> or use any of our services.</p>
+            <p>Cotidien Inc. ("Cotidien", "we", "us", or "our") is committed to protecting your privacy. This Privacy
+                Policy explains how we collect, use, share, and safeguard your personal information when you visit our
+                website <a href="https://www.cotidienlabel.com">www.cotidienlabel.com</a> or use any of our services.
+            </p>
             <p>By accessing or using our service, you agree to the terms of this Privacy Policy.</p>
         </div>
 
@@ -47,7 +50,8 @@ get_header();
                 <li>Understand site traffic and behavior</li>
                 <li>Provide relevant advertising</li>
             </ul>
-            <p>You can manage or disable cookies in your browser settings, but some site features may not function properly.</p>
+            <p>You can manage or disable cookies in your browser settings, but some site features may not function
+                properly.</p>
         </div>
 
         <div>
@@ -66,7 +70,8 @@ get_header();
             <h2>3. Sharing Your Information</h2>
             <p>We may share your information with:</p>
             <ul>
-                <li><strong>Service Providers:</strong> payment processors, shipping carriers, IT and marketing partners</li>
+                <li><strong>Service Providers:</strong> payment processors, shipping carriers, IT and marketing partners
+                </li>
                 <li><strong>Legal Authorities:</strong> if required to comply with the law or protect rights</li>
                 <li><strong>Business Transfers:</strong> in case of a merger, acquisition, or sale of assets</li>
                 <li><strong>Marketing Platforms and Analytics Providers:</strong> e.g., Meta, Google</li>
@@ -96,32 +101,38 @@ get_header();
 
         <div>
             <h2>5. Data Retention</h2>
-            <p>We keep your data only as long as needed for the purposes outlined in this policy, or as required by law. Data related to orders may be retained longer for legal or tax obligations.</p>
+            <p>We keep your data only as long as needed for the purposes outlined in this policy, or as required by law.
+                Data related to orders may be retained longer for legal or tax obligations.</p>
         </div>
 
         <div>
             <h2>6. Security</h2>
-            <p>We use reasonable and appropriate security measures to protect your data. However, no system can be 100% secure, and we cannot guarantee absolute protection.</p>
+            <p>We use reasonable and appropriate security measures to protect your data. However, no system can be 100%
+                secure, and we cannot guarantee absolute protection.</p>
         </div>
 
         <div>
             <h2>7. Children’s Privacy</h2>
-            <p>Our services are not intended for users under 13. We do not knowingly collect personal information from children. If you believe we have collected data from a child, contact us to have it deleted.</p>
+            <p>Our services are not intended for users under 13. We do not knowingly collect personal information from
+                children. If you believe we have collected data from a child, contact us to have it deleted.</p>
         </div>
 
         <div>
             <h2>8. Third-Party Links</h2>
-            <p>Our website may contain links to external sites. We are not responsible for the content or privacy practices of those sites. Please review their privacy policies before submitting information.</p>
+            <p>Our website may contain links to external sites. We are not responsible for the content or privacy
+                practices of those sites. Please review their privacy policies before submitting information.</p>
         </div>
 
         <div>
             <h2>9. Changes to This Privacy Policy</h2>
-            <p>We may update this Privacy Policy from time to time. Changes will be posted here with a revised effective date. Your continued use of the service means you accept the updated terms.</p>
+            <p>We may update this Privacy Policy from time to time. Changes will be posted here with a revised effective
+                date. Your continued use of the service means you accept the updated terms.</p>
         </div>
 
         <div>
             <h2>10. Contact Us</h2>
-            <p>If you have questions about this Privacy Policy or wish to exercise your privacy rights, please contact us at:</p>
+            <p>If you have questions about this Privacy Policy or wish to exercise your privacy rights, please contact
+                us at:</p>
             <address class="not-italic text-sm text-gray-700">
                 Cotidien<br>
                 <a href="mailto:dossier.hui@gmail.com" class="underline">dossier.hui@gmail.com</a>

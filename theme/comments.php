@@ -14,7 +14,7 @@
  * If the current post is protected by a password and the visitor has not yet
  * entered the password we will return early without loading the comments.
  */
-if ( post_password_required() ) {
+if (post_password_required()) {
 	return;
 }
 ?>
@@ -22,16 +22,16 @@ if ( post_password_required() ) {
 <div id="comments">
 
 	<?php
-	if ( have_comments() ) :
+	if (have_comments()):
 		?>
 		<h2>
 			<?php
 			$cotidien_comment_count = get_comments_number();
-			if ( '1' === $cotidien_comment_count ) {
+			if ('1' === $cotidien_comment_count) {
 				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 				printf(
 					/* translators: 1: title. */
-					esc_html__( 'One comment on &ldquo;%1$s&rdquo;', 'cotidien' ),
+					esc_html__('One comment on &ldquo;%1$s&rdquo;', 'cotidien'),
 					get_the_title()
 				);
 				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -39,8 +39,8 @@ if ( post_password_required() ) {
 				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 				printf(
 					/* translators: 1: comment count number, 2: title. */
-					esc_html( _nx( '%1$s comment on &ldquo;%2$s&rdquo;', '%1$s comments on &ldquo;%2$s&rdquo;', $cotidien_comment_count, 'comments title', 'cotidien' ) ),
-					number_format_i18n( $cotidien_comment_count ),
+					esc_html(_nx('%1$s comment on &ldquo;%2$s&rdquo;', '%1$s comments on &ldquo;%2$s&rdquo;', $cotidien_comment_count, 'comments title', 'cotidien')),
+					number_format_i18n($cotidien_comment_count),
 					get_the_title()
 				);
 				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -54,8 +54,8 @@ if ( post_password_required() ) {
 			<?php
 			wp_list_comments(
 				array(
-					'style'      => 'ol',
-					'callback'   => 'cotidien_html5_comment',
+					'style' => 'ol',
+					'callback' => 'cotidien_html5_comment',
 					'short_ping' => true,
 				)
 			);
@@ -67,9 +67,9 @@ if ( post_password_required() ) {
 
 		// If there are existing comments, but comments are closed, display a
 		// message.
-		if ( ! comments_open() ) :
+		if (!comments_open()):
 			?>
-			<p><?php esc_html_e( 'Comments are closed.', 'cotidien' ); ?></p>
+			<p><?php esc_html_e('Comments are closed.', 'cotidien'); ?></p>
 			<?php
 		endif;
 
