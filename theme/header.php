@@ -104,9 +104,9 @@
 	</script>
 
 	<header id="masthead" class="fixed top-0 left-0 right-0 z-50 bg-white">
-		<div class="w-full bg-[#f9f6cd] text-black text-center py-2 text-xs sm:text-base font-medium tracking-wide">
+		<!-- <div class="w-full bg-[#f9f6cd] text-black text-center py-2 text-xs sm:text-base font-medium tracking-wide">
 			Memorial Day Sale — <span class="underline">25% Off Sitewide</span> — code <strong>SUMMER25</strong>
-		</div>
+		</div> -->
 
 
 		<div class="main-content-width h-[80px] lg:h-[120px] flex flex-row items-center">
@@ -167,7 +167,7 @@
 			</div>
 		</div>
 	</header>
-	<div class="pt-[112px] lg:pt-[152px]"></div>
+	<div class="pt-[80px] lg:pt-[120px]"></div>
 
 	<?php if (!is_cart() && function_exists('WC')): ?>
 		<div id="cart-view" class="cart-view">
@@ -254,8 +254,8 @@
 											<div class="text-right font-medium">
 												<?php echo apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($product, $cart_item['quantity']), $cart_item, $cart_item_key) ?>
 											</div>
-											<form action="<?php echo esc_url(wc_get_cart_remove_url($cart_item_key)); ?>"
-												method="post" class="mt-4">
+											<form action="<?php echo esc_url(wc_get_cart_remove_url($cart_item_key)); ?>" method="post"
+												class="mt-4">
 												<button type="submit" class="text-sm text-gray-700 hover:underline cursor-pointer">
 													Remove
 												</button>
