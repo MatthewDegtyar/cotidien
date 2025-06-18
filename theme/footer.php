@@ -46,7 +46,7 @@
 			<div id="newsletter" class="flex flex-col w-full lg:w-[430px]">
 				<div id="newsletter" class="flex flex-col w-full lg:w-[430px]">
 					<span class="font-semibold mb-6">Subscribe to our Newsletter</span>
-					<?php echo do_shortcode('[mc4wp_form id="161"]'); ?>
+					<?php echo do_shortcode('[mc4wp_form id="308"]'); ?>
 				</div>
 			</div>
 		</div>
