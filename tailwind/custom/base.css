@@ -190,7 +190,7 @@ textarea {
 	height: 50px !important;
 	background-color: black !important;
 	color: white !important;
-	margin-top: 24px !important;
+	margin-top: 0 !important;
 }
 
 .cart .single_add_to_cart_button.disabled {
@@ -1348,6 +1348,13 @@ table.wc-block-cart-items .wc-block-cart-items__row,
 	}
 }
 
+@media (max-width: 1024px) {
+	.woocommerce-checkout {
+		padding-left: 8px !important;
+		padding-right: 8px !important;
+	}
+}
+
 /* Hide the modal by default */
 #size-guide-modal {
 	display: none;
@@ -1911,4 +1918,108 @@ form.woocommerce-ordering {
 		height: 100%;
 		object-fit: cover;
 	}
+}
+
+/** Make sure pre order shipping is disabled in bold and italics */
+.preorder-shipping-label {
+	font-weight: bold;
+	font-style: italic;
+	color: inherit;
+	/* keeps the default text color */
+}
+
+/******  Section for the /order-received/ page after users submit an order */
+.woocommerce-order-details__title {
+	display: none;
+}
+
+.woocommerce-order-overview {
+	display: flex;
+	flex-direction: column;
+	/* Stack items vertically */
+	gap: 12px;
+	/* Space between each <li> */
+	padding: 0;
+	list-style: none;
+	border: none;
+	margin: 0 !important;
+	background-color: #f7f5f1;
+}
+
+.woocommerce-order-overview li {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.4;
+	padding: 0;
+}
+
+.woocommerce ul.order_details li {
+	float: left;
+	margin-right: 2em;
+	text-transform: uppercase;
+	font-size: 0.715em;
+	line-height: 1;
+	border-right: none !important;
+	padding-right: 2em;
+	margin-left: 0;
+	padding-left: 0;
+	list-style-type: none;
+	margin-bottom: 0 !important;
+}
+
+/* Optional: Bold the labels for visual clarity */
+.woocommerce-order-overview li strong {
+	margin-top: 4px;
+}
+
+/* Add vertical spacing between the two columns when stacked */
+@media (max-width: 767px) {
+	.woocommerce-column--shipping-address {
+		margin-top: 24px;
+	}
+}
+
+/* Fixing the display of /cart/ page so that the text doesn't get
+mushed together*/
+@media (max-width: 767px) {
+
+	/* Container padding */
+	.woocommerce-cart-form__cart-item-2 {
+		padding: 0.5rem !important;
+		border-color: #e5e7eb !important;
+		/* subtle border */
+	}
+
+	/* Product info container auto height, full width */
+	.woocommerce-cart-form__cart-item-2>div.flex>div.flex-col {
+		height: auto !important;
+		width: 100% !important;
+	}
+
+	/* Product name full width, no fixed narrow widths */
+	.woocommerce-cart-form__cart-item-2 .product-name {
+		width: 100% !important;
+		white-space: normal !important;
+		margin-bottom: 0.25rem !important;
+	}
+
+	/* Quantity full width and top margin */
+	.woocommerce-cart-form__cart-item-2 .product-quantity {
+		width: 100% !important;
+		margin-top: 0.5rem !important;
+	}
+
+	/* Quantity wrapper flex with small gap */
+	.woocommerce-cart-form__cart-item-2 .quantity-wrapper {
+		display: flex !important;
+		align-items: center !important;
+		margin-bottom: 0.5rem !important;
+	}
+
+	/* Quantity input size */
+	.woocommerce-cart-form__cart-item-2 .input-text.qty {
+		width: 3.5rem !important;
+		text-align: center !important;
+	}
+
 }

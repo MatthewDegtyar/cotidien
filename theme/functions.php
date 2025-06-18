@@ -1256,3 +1256,328 @@ function custom_product_gallery_markup()
     });
     </script>';
 }
+
+/*
+| This setup adds support for displaying estimated shipping dates for 
+| "preorder" variations on variable products. It dynamically shows a 
+| message on the product page and checkout page based on custom 
+| meta fields assigned to product variations.
+|
+| Expected Custom Fields on Variations:
+| - _is_pre_order      => 'yes' if this variation is a preorder item
+| - _pre_order_date    => YYYY-MM-DD format of the estimated shipping date
+|
+| --------------------------------------------------------------------------
+| Frontend Behavior - Product Page
+| --------------------------------------------------------------------------
+| - Hooked into: woocommerce_before_add_to_cart_button
+| - Applies only to variable products
+| - Gathers preorder status and shipping date for all variations
+| - If any variation is marked as a preorder:
+|     - Outputs a hidden DOM element below the quantity input
+|     - Injects JavaScript to:
+|         • Format and show the correct date when a variation is selected
+|         • Update or hide date info on reset
+|
+| --------------------------------------------------------------------------
+| Cart & Checkout Behavior
+| --------------------------------------------------------------------------
+| - Function: get_latest_preorder_date_from_cart()
+|     • Loops through items in the WooCommerce cart
+|     • Finds the latest preorder shipping date among all variations
+|
+| - Hooked into: woocommerce_review_order_before_submit
+|     • Displays the latest preorder shipping date before the 
+|       "Place Order" button at checkout
+|
+| --------------------------------------------------------------------------
+| Dependencies & Assumptions
+| --------------------------------------------------------------------------
+| - JavaScript relies on WooCommerce variation form structure
+| - Uses jQuery and jQuery UI Datepicker formatting
+| - Custom meta fields must be set per variation
+|
+*/
+add_action('woocommerce_before_add_to_cart_button', function () {
+    global $product;
+
+    if (!$product || !$product->is_type('variable')) {
+        return;
+    }
+
+    $variations = $product->get_children();
+    $dates = [];
+    $preorder_statuses = [];
+
+    foreach ($variations as $vid) {
+        $dates[$vid] = get_post_meta($vid, '_pre_order_date', true) ?: '';
+        $preorder_statuses[$vid] = get_post_meta($vid, '_is_pre_order', true) === 'yes' ? true : false;
+    }
+
+    // If no preorder variation, don't output anything
+    if (!in_array(true, $preorder_statuses, true)) {
+        return;
+    }
+
+    $dates_json = wp_json_encode($dates);
+    $status_json = wp_json_encode($preorder_statuses);
+
+    echo '<div id="preorder-shipping-info" class="preorder-shipping-info" style="display:none;">';
+    echo '<span class="preorder-shipping-label"><em><strong>Estimated shipping date:</strong></em></span> ';
+    echo '<span class="date-text"></span>';
+    echo '</div>';
+    ?>
+    <script>
+        jQuery(function ($) {
+            var dates = <?php echo $dates_json; ?>;
+            var preorderStatus = <?php echo $status_json; ?>;
+
+            function formatDate(dateString) {
+                if (!dateString) return '';
+                var parts = dateString.split('-');
+                if (parts.length !== 3) return dateString;
+                var dateObj = new Date(parts[0], parts[1] - 1, parts[2]);
+                if (isNaN(dateObj.getTime())) return dateString;
+                return $.datepicker.formatDate('MM d, yy', dateObj);
+            }
+
+            function updatePreorderDate(variation) {
+                if (variation && variation.variation_id && preorderStatus[variation.variation_id]) {
+                    $('.date-text').text(formatDate(dates[variation.variation_id]));
+                    $('#preorder-shipping-info').show();
+                } else {
+                    $('.date-text').text('');
+                    $('#preorder-shipping-info').hide();
+                }
+            }
+
+            var $form = $('.variations_form');
+            if ($form.length) {
+                // On page load, check selected variation
+                var selected = $form.data('product_variations')?.find(v => v.is_active);
+                updatePreorderDate(selected);
+
+                // Update on variation select
+                $form.on('found_variation', function (event, variation) {
+                    updatePreorderDate(variation);
+                });
+
+                $form.on('reset_data', function () {
+                    $('.date-text').text('');
+                    $('#preorder-shipping-info').hide();
+                });
+
+                // Move preorder date div below quantity input
+                var $preorderDate = $('#preorder-shipping-info');
+                var $quantity = $form.find('.quantity');
+                if ($preorderDate.length && $quantity.length) {
+                    $preorderDate.insertAfter($quantity);
+                }
+            }
+        });
+    </script>
+    <?php
+}, 20);
+
+// Function to get latest preorder date from cart
+function get_latest_preorder_date_from_cart()
+{
+    $latest_date = false;
+
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        $product = $cart_item['data'];
+
+        // Check if product is variable and has variations
+        if ($product && $product->is_type('variation')) {
+            $variation_id = $product->get_id();
+
+            // Check if this variation is preorder and has a preorder date
+            $is_preorder = get_post_meta($variation_id, '_is_pre_order', true);
+            $preorder_date = get_post_meta($variation_id, '_pre_order_date', true);
+
+            if ($is_preorder && $preorder_date) {
+                $preorder_timestamp = strtotime($preorder_date);
+
+                if (!$latest_date || $preorder_timestamp > $latest_date) {
+                    $latest_date = $preorder_timestamp;
+                }
+            }
+        }
+    }
+
+    if ($latest_date) {
+        return date_i18n(get_option('date_format'), $latest_date);
+    }
+
+    return false;
+}
+
+// Output estimated shipping date above Place Order button on checkout
+function show_preorder_shipping_date_above_place_order()
+{
+    $date = get_latest_preorder_date_from_cart();
+
+    if ($date) {
+        echo '<div id="preorder-shipping-info" style="margin-bottom: 20px; padding: 10px; background: #e0f0ff; border-left: 4px solid #0073aa; font-weight: bold;">';
+        echo 'Estimated Shipping Date: ' . esc_html($date);
+        echo '</div>';
+    }
+}
+add_action('woocommerce_review_order_before_submit', 'show_preorder_shipping_date_above_place_order');
+
+
+add_filter('woocommerce_get_privacy_policy_text', function ($text) {
+    if (is_checkout()) {
+        $terms_url = get_permalink(wc_get_page_id('terms-and-conditions'));
+        $privacy_url = get_permalink(wc_get_page_id('privacy-policy'));
+
+        return sprintf(
+            'By proceeding with your purchase you agree to our <a href="%s" target="_blank" rel="noopener noreferrer">Terms and Conditions</a> and <a href="%s" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.',
+            esc_url($terms_url),
+            esc_url($privacy_url)
+        );
+    }
+    return $text;
+});
+
+/**
+ * Change CSS variables for the progress bar.
+ * 
+ * @param  array  $css_variables  The CSS variables contexts with key/value pairs for each CSS variable.
+ *                                The contexts are defined with the CSS selectors to which the CSS variables should apply.
+ */
+function fluidcheckout_change_progress_bar_color_css_variables($css_variables)
+{
+    // Bail if design template class is not available
+    if (!class_exists('FluidCheckout_DesignTemplates')) {
+        return $css_variables;
+    }
+
+    // Add CSS variables
+    $new_css_variables = array(
+        // The `:root` context applies to the entire page
+        // 
+        // If you custom colors are not applying, you might need to change the context to be more specific.
+        // For example: `:root body.theme-shoptimizer` will override any CSS variables set to the `:root` context.
+        // 
+        // Any valid CSS property value can be used for each CSS variable,
+        // provided they are also valid for the CSS property these variable are actually used on.
+        ':root' => array(
+            // Progress bar colors
+            '--fluidcheckout--checkout-progress--background-color' => '#fff',
+            '--fluidcheckout--checkout-progress--bar-color' => '#d8d8d8',
+            '--fluidcheckout--checkout-progress--bar-color--complete' => '#000000',
+            '--fluidcheckout--checkout-progress--bar-color--current' => '#000000',
+            '--fluidcheckout--checkout-progress--step-count--text-color' => '#535156',
+        ),
+    );
+
+    return FluidCheckout_DesignTemplates::instance()->merge_css_variables($css_variables, $new_css_variables);
+}
+add_action('fc_css_variables', 'fluidcheckout_change_progress_bar_color_css_variables', 100);
+
+/**
+ * Change CSS variables for sections.
+ * 
+ * @param  array  $css_variables  The CSS variables contexts with key/value pairs for each CSS variable.
+ *                                The contexts are defined with the CSS selectors to which the CSS variables should apply.
+ */
+function fluidcheckout_change_section_color_css_variables($css_variables)
+{
+    // Bail if design template class is not available
+    if (!class_exists('FluidCheckout_DesignTemplates')) {
+        return $css_variables;
+    }
+
+    // Add CSS variables
+    $new_css_variables = array(
+        // The `:root` context applies to the entire page
+        // 
+        // If you custom colors are not applying, you might need to change the context to be more specific.
+        // For example: `:root body.theme-shoptimizer` will override any CSS variables set to the `:root` context.
+        // 
+        // Any valid CSS property value can be used for each CSS variable,
+        // provided they are also valid for the CSS property these variable are actually used on.
+        ':root' => array(
+            // Section colors
+            '--fluidcheckout--section--background-color' => '#f7f5f1',
+            '--fluidcheckout--section--border-color' => 'none',
+
+            '--fluidcheckout--section--highlighted-background-color' => '#f7f5f1',
+            '--fluidcheckout--section--highlighted-field-background-color' => '#fff',
+
+            '--fluidcheckout--section--border-radius' => '4px',
+        ),
+    );
+
+    return FluidCheckout_DesignTemplates::instance()->merge_css_variables($css_variables, $new_css_variables);
+}
+add_action('fc_css_variables', 'fluidcheckout_change_section_color_css_variables', 100);
+
+/**
+ * Change the contact substep title.
+ */
+function fluidcheckout_change_contact_substep_title($title)
+{
+    $title = __('Contact details', 'your-text-domain');
+    return $title;
+}
+add_filter('fc_substep_title_contact', 'fluidcheckout_change_contact_substep_title', 10);
+
+/**
+ * Change the shipping address substep title.
+ */
+function fluidcheckout_change_shipping_address_substep_title($title)
+{
+    $title = __('Shipping address', 'your-text-domain');
+    return $title;
+}
+add_filter('fc_substep_title_shipping_address', 'fluidcheckout_change_shipping_address_substep_title', 10);
+
+
+/**
+ * Change the billing address substep title.
+ */
+function fluidcheckout_change_billing_address_substep_title($title)
+{
+    $title = __('Billing address', 'your-text-domain');
+    return $title;
+}
+add_filter('fc_substep_title_billing_address', 'fluidcheckout_change_billing_address_substep_title', 10);
+
+/**
+ * Change the payment substep title.
+ */
+function fluidcheckout_change_payment_substep_title($title)
+{
+    $title = __('Pay with', 'your-text-domain');
+    return $title;
+}
+add_filter('fc_substep_title_payment', 'fluidcheckout_change_payment_substep_title', 10);
+
+/**
+ * Changes the label for the "Proceed to <next step>" buttons.
+ * 
+ * @param  string  The button label for the next step, related to the current step being processed. See parameter `$step_id`.
+ * @param  string  The step ID of the current step being processed.
+ * @param  array   The step arguments for the next step.
+ */
+function fluidcheckout_change_proceed_to_next_step_button_label($button_label, $step_id, $next_step_args)
+{
+    // Change the button labels for each of the next steps,
+    // based on the step ID of the next step.
+    switch ($next_step_args['step_id']) {
+        case 'shipping':
+            $button_label = __('Shipping →', 'your-text-domain');
+            break;
+        case 'billing':
+            $button_label = __('Billing →', 'your-text-domain');
+            break;
+        case 'payment':
+            $button_label = __('Payment →', 'your-text-domain');
+            break;
+    }
+
+    return $button_label;
+}
+add_filter('fc_proceed_to_next_step_button_label', 'fluidcheckout_change_proceed_to_next_step_button_label', 10, 3);
