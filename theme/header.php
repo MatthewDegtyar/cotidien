@@ -119,7 +119,7 @@
 					<nav class="lg:flex flex-row gap-[48px] ml-[48px]">
 						<a href="/shop" class="nav-link">Shop</a>
 						<a href="/about" class="nav-link">About</a>
-						<a href="/threads" class="nav-link">Threads</a>
+						<!-- <a href="/threads" class="nav-link">Threads</a> -->
 					</nav>
 
 					<div class="flex lg:hidden"></div>
@@ -307,7 +307,7 @@
 			<a href="/">Home</a>
 			<a href="/shop">Shop</a>
 			<a href="/about">About</a>
-			<a href="/threads">Threads</a>
+			<!-- <a href="/threads">Threads</a> -->
 		</div>
 	</nav>
 

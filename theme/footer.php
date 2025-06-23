@@ -30,7 +30,7 @@
 				<div class="flex flex-col gap-4 w-[150px] lg:w-[180px]">
 					<span class="font-semibold mb-2">About</span>
 					<a href="/about" class="text-sm font-light hover:underline">Our Origin</a>
-					<a href="/threads" class="text-sm font-light hover:underline">Threads</a>
+					<!-- <a href="/threads" class="text-sm font-light hover:underline">Threads</a> -->
 					<!-- <a class="text-sm font-light hover:underline">Press</a> -->
 				</div>
 				<div class="flex flex-col gap-4 w-[150px] lg:w-[180px]">
