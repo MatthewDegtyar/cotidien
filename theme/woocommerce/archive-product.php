@@ -54,7 +54,7 @@ get_header( 'shop' );
       do_action( 'woocommerce_before_shop_loop' );
 
 	  ?>
-	  <div class="woo-product-loop-wrapper mb-16">
+	  <div class="woo-product-loop-wrapper mb-4">
 		<?php
 
       woocommerce_product_loop_start();

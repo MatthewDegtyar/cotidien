@@ -43,7 +43,7 @@ if ( post_password_required() ) {
 	do_action( 'woocommerce_before_single_product_summary' );
 	?>
 
-	<div class="summary entry-summary">
+	<div class="summary entry-summary pt-1 lg:pt-20 xl:pt-32">
 		<?php
 		/**
 		 * Hook: woocommerce_single_product_summary.
@@ -65,7 +65,7 @@ if ( post_password_required() ) {
 			<input type="checkbox" id="size-guide-toggle" class="hidden">
 
 			<!-- Button to trigger checkbox change -->
-			<label for="size-guide-toggle" class="text-sm font-bold underline hover:underline cursor-pointer">
+			<label for="size-guide-toggle" class="inline-block mt-4 text-sm font-bold cursor-pointer" style="border-bottom: 1px solid; padding-bottom: 2px;">
 				Size guide
 			</label>
 
@@ -116,6 +116,56 @@ if ( post_password_required() ) {
 
 				</div>
 			</div>
+			<?php
+		}
+
+		function cotidien_custom_product_tabs_inside_summary() {
+			global $product;
+
+			$description = apply_filters('the_content', $product->get_description());
+			$fabric_content = get_field('fabric_content', $product->get_id());
+			$care_instructions = get_field('care_instructions', $product->get_id());
+			$model = get_field('model', $product->get_id());
+			?>
+
+			<div class="product-tabs-css">
+				<input type="radio" name="tabs" id="tab-description" checked>
+				<input type="radio" name="tabs" id="tab-details">
+				<input type="radio" name="tabs" id="tab-size-fit">
+
+				<nav class="flex justify-center gap-4">
+				<label for="tab-description">Description</label>
+				<label for="tab-details">Details</label>
+				<label for="tab-size-fit">Size & Fit</label>
+				</nav>
+
+				<section id="content-description">
+				<?php echo $description; ?>
+				</section>
+
+				<section id="content-details">
+				<?php if ( $fabric_content ) : ?>
+					<h4>FABRIC CONTENT</h4>
+					<p><?php echo wp_kses_post($fabric_content); ?></p>
+				<?php endif; ?>
+				<?php if ( $care_instructions ) : ?>
+					<h4>CARE INSTRUCTIONS</h4>
+					<p><?php echo wp_kses_post($care_instructions); ?></p>
+				<?php endif; ?>
+
+				<p> Due to the handcrafted nature of this item, we do not offer returns or exchanges. </p>
+				</section>
+
+				<section id="content-size-fit">
+				<?php if ( $model ) : ?>
+					<h4>MODEL</h4>
+					<p><?php echo esc_html($model); ?></p>
+				<?php else : ?>
+					<p>Model information not available.</p>
+				<?php endif; ?>
+				</section>
+			</div>
+
 			<?php
 		}
 		?>

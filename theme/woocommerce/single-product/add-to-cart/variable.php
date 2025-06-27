@@ -36,7 +36,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 			<?php echo esc_html(apply_filters('woocommerce_out_of_stock_message', __('This product is currently out of stock and unavailable.', 'woocommerce'))); ?>
 		</p>
 	<?php else: ?>
-		<table class="variations flex flex-col items-start -mt-4" cellspacing="0" role="presentation">
+		<table class="variations flex flex-col items-center -mt-4" cellspacing="0" role="presentation">
 			<tbody>
 				<?php
 				// Reverse the order of the attributes before starting the loop
@@ -44,11 +44,11 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 
 				foreach ($attributes as $attribute_name => $options):
 					?>
-					<tr class="flex flex-col items-start mt-[24px]">
+					<tr class="flex flex-col items-center mt-4">
 						<th class="label">
 							<label for="<?php echo esc_attr(sanitize_title($attribute_name)); ?>">
 								<?php echo wc_attribute_label($attribute_name); // WPCS: XSS ok. ?>
-							</label>:
+							</label>
 							<span class="font-normal" id="selected-option-<?php echo sanitize_title($attribute_name); ?>">
 								<?php
 								// Default value when no selection
@@ -102,26 +102,14 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 			do_action('woocommerce_single_variation');
 
 			/**
+			 * Add custom product descriptions inside summary after everything else
+			 */
+			add_action('woocommerce_single_product_summary', 'cotidien_custom_product_tabs_inside_summary', 35);
+
+			/**
 			 * Add Size Guide Button after the product description
 			 */
-			add_action('woocommerce_after_single_variation', 'add_size_guide_button', 18);
-
-			// Add product description after the variation details
-			add_action('woocommerce_after_single_variation', 'add_product_description_after_variation', 20);
-
-			function add_product_description_after_variation()
-			{
-				global $product;
-
-				// Check if we are on a variable product page
-				if ($product && $product->is_type('variable')) {
-					echo '<div class="product-description-after-variation">';
-					// echo '<h3>Product Description</h3>';
-					echo '<p>' . $product->get_description() . '</p>'; // Display the product description
-					echo '</div>';
-				}
-			}
-
+			add_action('woocommerce_single_product_summary', 'add_size_guide_button', 40);
 
 			/**
 			 * Hook: woocommerce_after_single_variation.

@@ -115,9 +115,293 @@
     }
 }
 
+/* 
+  Center aligns product summary content on the page.
+  - Uses flex column layout with top alignment.
+  - Horizontally centers all direct child elements.
+  - Ensures text and elements are centered within the summary.
+*/
 .summary.entry-summary {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+}
+
+.summary.entry-summary>* {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*
+ * Custom Product Description Tabs Styling
+ * --------------------
+ * Hides native radio inputs and styles custom tab labels for navigation.
+ * Active tab label is highlighted with a bottom border and color change.
+ * Tab content sections are hidden by default and shown when the corresponding tab is selected.
+ * Paragraphs inside tabs use italic, small text with spacing.
+ * Headings inside tabs use small, bold text with spacing.
+ */
+
+/* Hide radio buttons */
+.product-tabs-css input[type="radio"] {
+    display: none;
+}
+
+/* Style tab labels */
+.product-tabs-css nav {
+    display: flex;
+    /* border-bottom: 2px solid #ccc; */
+    margin-bottom: 16px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.product-tabs-css nav label {
+    margin-right: 10px;
+    font-weight: 600;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+    display: inline-block;
+    max-width: fit-content;
+}
+
+/* Highlight active tab label */
+.product-tabs-css input#tab-description:checked~nav label[for="tab-description"],
+.product-tabs-css input#tab-details:checked~nav label[for="tab-details"],
+.product-tabs-css input#tab-size-fit:checked~nav label[for="tab-size-fit"] {
+    border-color: #000;
+    color: #000;
+}
+
+/* Hide all tab contents */
+.product-tabs-css section {
+    display: none;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Show the active tab content */
+.product-tabs-css input#tab-description:checked~#content-description,
+.product-tabs-css input#tab-details:checked~#content-details,
+.product-tabs-css input#tab-size-fit:checked~#content-size-fit {
+    display: block;
+}
+
+.product-tabs-css p {
+    @apply text-xs;
+    font-style: italic;
+    margin-bottom: 1em;
+}
+
+.product-tabs-css h4 {
+    @apply text-xs font-bold;
+    margin-bottom: 1em;
+}
+
+/* Larger fonts for tablets and up */
+@media (min-width: 768px) {
+    .product-tabs-css section {
+        @apply text-lg;
+    }
+
+    .product-tabs-css p {
+        @apply text-lg;
+    }
+
+    .product-tabs-css h4 {
+        @apply text-lg;
+    }
+
+    .product-tabs-css nav label {
+        @apply text-lg;
+    }
+}
+
+/*
+ * Related Products Section
+ * --------------------
+ * Styles the Related Products section with full width container and centered content.
+ * Sets a max width of 1200px and horizontal padding for layout consistency.
+ * Applies uppercase, centered heading with responsive font sizes using Cormorant font.
+ * Uses Tailwind utilities for font styling and spacing.
+ */
+
+.related.products {
+    display: block;
+    width: 100%;
+}
+
+.related.products>div {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.related.products>h2 {
+    @apply font-cormorant text-xl md:text-3xl;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+}
+
+/*
+ * Color Button Styling
+ * --------------------
+ * Styles circular color option buttons for product variations.
+ * Sets fixed size and circular shape with transparent outer border.
+ * Uses inner padding and a ::before pseudo-element to create a colored circle fill.
+ * Adds a black ring shadow when selected or focused for clear visual feedback.
+ * Ensures smooth box-shadow transitions and proper layering without interfering with background.
+ */
+
+.variation-option.color-option {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    border: 3px solid transparent;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block !important;
+    padding: 0 !important;
+    transition: box-shadow 0.3s ease;
+    position: relative;
+    background-clip: content-box;
+    padding: 6px;
+}
+
+/* Colored circle fills the inner area */
+.variation-option.color-option::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    border-radius: 50%;
+    background-color: inherit;
+    pointer-events: none;
+}
+
+/* Outer black ring as box-shadow with some space */
+.variation-option.color-option.selected {
+    box-shadow: 0 0 0 1px black !important;
+    border-color: transparent !important;
+}
+
+/* Focus ring */
+.variation-option.color-option:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px black !important;
+    border-color: transparent !important;
+}
+
+/*
+ * Size Button Styling
+ * --------------------
+ * Styles square size buttons for product variations.
+ * Ensures fixed dimensions and centers text using flexbox.
+ * Adds smooth transitions and bold, legible text.
+ * Applies a visible black border ring when selected or focused for clarity and accessibility.
+ */
+
+/* Target only size buttons by container or class */
+.variation-buttons[data-attribute-name="size"] .variation-option {
+    width: 39px !important;
+    height: 39px !important;
+    border: 1px solid;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: normal !important;
+    text-align: center;
+    padding: 0 !important;
+}
+
+/* Add black border ring when selected */
+.variation-buttons[data-attribute-name="size"] .variation-option.selected {
+    border-color: black !important;
+    box-shadow: 0 0 0 2px black !important;
+}
+
+/* Focus ring for accessibility */
+.variation-buttons[data-attribute-name="size"] .variation-option:focus {
+    outline: none;
+    border-color: black !important;
+    box-shadow: 0 0 0 2px black !important;
+}
+
+/* === Button Type Variation Styles ===
+ *
+ * Styles rectangular "button type" variation buttons similarly to size buttons.
+ * Uses fixed width and height to create a rectangular shape.
+ * Centers text and includes hover/focus transitions.
+ * Applies a bold black border ring when selected or focused for better visibility.
+ */
+
+/* Style button type buttons like size buttons, but rectangular */
+.variation-buttons[data-attribute-name="pa_button-type"] .variation-option {
+    width: 70px !important;
+    height: 30px !important;
+    line-height: 30px;
+    padding: 0 !important;
+    margin: 0 1px 1px 0;
+    border: 1px solid;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: inline-block;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+/* Selected state */
+.variation-buttons[data-attribute-name="pa_button-type"] .variation-option.selected {
+    border-color: black !important;
+    box-shadow: 0 0 0 2px black !important;
+}
+
+/* Focus ring */
+.variation-buttons[data-attribute-name="pa_button-type"] .variation-option:focus {
+    outline: none;
+    border-color: black !important;
+    box-shadow: 0 0 0 2px black !important;
+}
+
+/* === Variation Labels & Visibility ===
+ *
+ * - Hides the quantity label and input
+ * - Hides the label for the "Color" attribute.
+ * - Bolds visible attribute values (e.g., selected color).
+ * - Hides size and button type selected values under the label.
+ */
+
+.quantity,
+.quantity input.qty {
+    display: none !important;
+}
+
+th.label>label[for="color"] {
+    display: none;
+}
+
+th.label>span {
+    font-weight: bold;
+}
+
+th.label>span#selected-option-size,
+th.label>span#selected-option-pa_button-type,
+th.label>.variation-label#selected-option-size,
+th.label>.variation-label#selected-option-pa_button-type {
+    display: none !important;
+    font-weight: 300 !important;
 }
