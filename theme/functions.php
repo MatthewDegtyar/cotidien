@@ -1006,8 +1006,8 @@ add_action('widgets_init', 'cotidien_widgets_init');
 
 function cotidien_scripts()
 {
-    wp_enqueue_style('cotidien-style', get_stylesheet_uri(), array(), COTIDIEN_VERSION);
-    wp_enqueue_script('cotidien-script', get_template_directory_uri() . '/js/script.min.js', array(), COTIDIEN_VERSION, true);
+    wp_enqueue_style('cotidien-style', get_stylesheet_uri(), [], time());
+    wp_enqueue_script('cotidien-script', get_template_directory_uri() . '/js/script.min.js', array(), time(), true);
 
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
