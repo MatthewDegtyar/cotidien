@@ -78,34 +78,31 @@ $prod_image_2 = get_theme_mod('home_prod_img_2', $default_img);
 				</div>
 			</div>
 		</div>
-<div class="flex flex-col main-content-width mb-4 lg:mb-[24px]">
-			<h2 class="cus-page-title my-5">New In</h2>
-			<?php echo do_shortcode('[products limit="4" orderby="date" order="DESC" visibility="visible" stock_status="instock"]'); ?>
-	<!-- <section class="landing-subimages w-full max-w-full mx-auto mt-4 px-0">
+	<section class="landing-subimages w-full max-w-full mx-auto mt-4 px-0">
 		<div class="flex gap-x-4 max-w-full">
-			<a href="/product/soleil-dress" class="w-1/2 relative flex items-center justify-center overflow-hidden">
+			<a href="/product/margot-dress-ivory" class="w-1/2 relative flex items-center justify-center overflow-hidden">
 			<img
 				src="<?php echo esc_url($prod_image_1); ?>"
 				alt="Title 1"
 				class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
 			/>
 			<h3 class="font-cormorant uppercase absolute text-white md:text-5xl px-3 py-1 pointer-events-none drop-shadow-md">
-				Soleil Dress
+				Margot Dress
 			</h3>
 			</a>
 
-			<a href="/product/margot-dress-ivory" class="w-1/2 relative flex items-center justify-center overflow-hidden">
+			<a href="/product/soleil-dress" class="w-1/2 relative flex items-center justify-center overflow-hidden">
 			<img
 				src="<?php echo esc_url($prod_image_2); ?>"
 				alt="Title 2"
 				class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
 			/>
 			<h3 class="font-cormorant uppercase absolute text-white md:text-5xl px-3 py-1 pointer-events-none drop-shadow-md">
-				Margot Dress
+				Soleil Dress
 			</h3>
 			</a>
 		</div>
-	</section> -->
+	</section>
 
 	</main><!-- #main -->
 </section><!-- #primary -->
