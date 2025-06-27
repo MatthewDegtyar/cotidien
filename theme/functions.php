@@ -143,14 +143,11 @@ function custom_title_price_wrapper()
 {
     global $product;
     ?>
-    <div class="flex items-center gap-4">
         <h1 class="product_title"><?php the_title(); ?></h1>
-        <span class="text-[20px] text-black ml-[128px] font-jakarta"><?php echo $product->get_price_html(); ?></span>
-    </div>
+        <span class="mt-2 text-m text-black text-right font-jakarta"><?php echo $product->get_price_html(); ?></span>
     <?php
 }
 
-add_action('woocommerce_before_quantity_input_field', 'add_custom_quantity_label', 10, 0);
 function theme_customize_register($wp_customize)
 {
 
@@ -214,6 +211,26 @@ function theme_customize_register($wp_customize)
         'label' => __('Home Header Image'),
         'section' => 'home_section',
         'settings' => 'home_header_img',
+    )));
+
+    // Product Image 1
+    $wp_customize->add_setting('home_prod_img_1', array(
+        'default' => 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8?q=80&w=3870&auto=format&fit=crop',
+    ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'home_prod_img_1', array(
+        'label' => __('Home Prod Image 1'),
+        'section' => 'home_section',
+        'settings' => 'home_prod_img_1',
+    )));
+
+    // Product Image 2
+    $wp_customize->add_setting('home_prod_img_2', array(
+        'default' => 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8?q=80&w=3870&auto=format&fit=crop',
+    ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'home_prod_img_2', array(
+        'label' => __('Home Prod Image 2'),
+        'section' => 'home_section',
+        'settings' => 'home_prod_img_2',
     )));
 
     //////// Section for Shop Page Images /////////
@@ -350,7 +367,7 @@ if (!function_exists('wc_variation_attribute_buttons')) {
         $label = wc_attribute_label($attribute);
 
         $html = '<div class="variation-buttons" data-attribute-name="' . esc_attr(sanitize_title($attribute)) . '" data-attribute-label="' . esc_attr($label) . '">';
-        $html .= '<div class="variation-label" id="selected-option-' . esc_attr(sanitize_title($attribute)) . '" style="font-weight:bold; margin-bottom: 4px; display: none;"></div>';
+        $html .= '<div class="variation-label" id="selected-option-' . esc_attr(sanitize_title($attribute)) . '" style="margin-bottom: 4px; display: none;"></div>';
 
         foreach ($options as $option) {
             $option_slug = esc_attr($option);
@@ -429,7 +446,7 @@ function custom_variation_buttons_script()
                         // === [New] Update label ===
                         const label = button.closest('.variation-buttons').find('.variation-label');
                         if (label.length) {
-                            label.text(attributeLabel(attribute) + ': ' + value);
+                            label.text(value);
                         }
                     }
                 }
@@ -1581,3 +1598,10 @@ function fluidcheckout_change_proceed_to_next_step_button_label($button_label, $
     return $button_label;
 }
 add_filter('fc_proceed_to_next_step_button_label', 'fluidcheckout_change_proceed_to_next_step_button_label', 10, 3);
+
+// removes the awkward gap between product summary and related products
+function cotidien_remove_default_product_tabs() {
+	remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10);
+}
+add_action('woocommerce_before_single_product', 'cotidien_remove_default_product_tabs', 1);
+

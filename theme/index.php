@@ -23,6 +23,10 @@ $default_img = 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102
 // Fetch the custom header image (falls back to $default_img if not set)
 $bottom_header = get_theme_mod('home_header_img', $default_img);
 
+// Products hero images
+$prod_image_1 = get_theme_mod('home_prod_img_1', $default_img);
+$prod_image_2 = get_theme_mod('home_prod_img_2', $default_img);
+
 ?>
 
 <section id="primary">
@@ -74,11 +78,34 @@ $bottom_header = get_theme_mod('home_header_img', $default_img);
 				</div>
 			</div>
 		</div>
-
-		<div class="flex flex-col main-content-width mb-4 lg:mb-[24px]">
+<div class="flex flex-col main-content-width mb-4 lg:mb-[24px]">
 			<h2 class="cus-page-title my-5">New In</h2>
 			<?php echo do_shortcode('[products limit="4" orderby="date" order="DESC" visibility="visible" stock_status="instock"]'); ?>
+	<!-- <section class="landing-subimages w-full max-w-full mx-auto mt-4 px-0">
+		<div class="flex gap-x-4 max-w-full">
+			<a href="/product/soleil-dress" class="w-1/2 relative flex items-center justify-center overflow-hidden">
+			<img
+				src="<?php echo esc_url($prod_image_1); ?>"
+				alt="Title 1"
+				class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+			/>
+			<h3 class="font-cormorant uppercase absolute text-white md:text-5xl px-3 py-1 pointer-events-none drop-shadow-md">
+				Soleil Dress
+			</h3>
+			</a>
+
+			<a href="/product/margot-dress-ivory" class="w-1/2 relative flex items-center justify-center overflow-hidden">
+			<img
+				src="<?php echo esc_url($prod_image_2); ?>"
+				alt="Title 2"
+				class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+			/>
+			<h3 class="font-cormorant uppercase absolute text-white md:text-5xl px-3 py-1 pointer-events-none drop-shadow-md">
+				Margot Dress
+			</h3>
+			</a>
 		</div>
+	</section> -->
 
 	</main><!-- #main -->
 </section><!-- #primary -->
