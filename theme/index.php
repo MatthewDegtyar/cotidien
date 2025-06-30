@@ -22,6 +22,7 @@ $default_img = 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102
 
 // Fetch the custom header image (falls back to $default_img if not set)
 $bottom_header = get_theme_mod('home_header_img', $default_img);
+$home_mobile_header = get_theme_mod('home_header_mobile_img', $default_img);
 
 // Products hero images
 $prod_image_1 = get_theme_mod('home_prod_img_1', $default_img);
@@ -32,8 +33,8 @@ $prod_image_2 = get_theme_mod('home_prod_img_2', $default_img);
 <section id="primary">
 	<main id="main">
 		<div class="flex flex-col relative">
-			<!-- Mobile video hero -->
-			<div class="mobile-hero-video-wrapper">
+			<!-- Mobile hero -->
+			<div class="mobile-hero-wrapper">
 				<video class="mobile-hero-video" autoplay muted playsinline loop preload="auto">
 					<?php
 					$video_url = get_theme_mod('about_video_url', 'https://cotidienlabel.com/wp-content/uploads/2025/05/mobile_720_version2_encoded.mp4');
@@ -42,9 +43,15 @@ $prod_image_2 = get_theme_mod('home_prod_img_2', $default_img);
 					Your browser does not support the video tag.
 				</video>
 				<div class="video-text-overlay">
-					<h2>Handmade in the US</h2>
-					<p>Sustainably yours — visit our studio @bysophiahui on Instagram.</p>
+					<h2>COTIDIEN</h2>
 				</div>
+				<!-- <a href="/shop">
+					<img class="w-full h-full object-cover" src="<?php echo esc_url($home_mobile_header); ?>"
+							alt="Cotidien" />
+				</a>
+				<div class="video-text-overlay">
+					<h2>– sunlit essentials –</h2>
+				</div> -->
 			</div>
 
 			<!-- Desktop image hero -->
@@ -86,8 +93,8 @@ $prod_image_2 = get_theme_mod('home_prod_img_2', $default_img);
 				alt="Title 1"
 				class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
 			/>
-			<h3 class="font-cormorant uppercase absolute text-white md:text-5xl px-3 py-1 pointer-events-none drop-shadow-md">
-				Margot Dress
+			<h3 class="font-cormorant uppercase absolute top-[80%] text-white md:text-5xl px-3 py-1 pointer-events-none drop-shadow-lg">
+				margot dress
 			</h3>
 			</a>
 
@@ -97,8 +104,8 @@ $prod_image_2 = get_theme_mod('home_prod_img_2', $default_img);
 				alt="Title 2"
 				class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
 			/>
-			<h3 class="font-cormorant uppercase absolute text-white md:text-5xl px-3 py-1 pointer-events-none drop-shadow-md">
-				Soleil Dress
+			<h3 class="font-cormorant uppercase absolute top-[80%] text-white md:text-5xl px-3 py-1 pointer-events-none drop-shadow-lg">
+				soleil dress
 			</h3>
 			</a>
 		</div>

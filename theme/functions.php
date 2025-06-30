@@ -203,7 +203,7 @@ function theme_customize_register($wp_customize)
         'priority' => 30,
     ));
 
-    // Header Image
+    // Desktop Header Image
     $wp_customize->add_setting('home_header_img', array(
         'default' => 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8?q=80&w=3870&auto=format&fit=crop',
     ));
@@ -211,6 +211,16 @@ function theme_customize_register($wp_customize)
         'label' => __('Home Header Image'),
         'section' => 'home_section',
         'settings' => 'home_header_img',
+    )));
+
+    // Mobile Header Image
+    $wp_customize->add_setting('home_header_mobile_img', array(
+        'default' => 'https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8?q=80&w=3870&auto=format&fit=crop',
+    ));
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'home_header_mobile_img', array(
+        'label' => __('Home Header Mobile Image'),
+        'section' => 'home_section',
+        'settings' => 'home_header_mobile_img',
     )));
 
     // Product Image 1
