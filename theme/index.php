@@ -35,7 +35,7 @@ $prod_image_2 = get_theme_mod('home_prod_img_2', $default_img);
 		<div class="flex flex-col relative">
 			<!-- Mobile hero -->
 			<div class="mobile-hero-wrapper">
-				<video class="mobile-hero-video" autoplay muted playsinline loop preload="auto">
+				<!-- <video class="mobile-hero-video" autoplay muted playsinline loop preload="auto">
 					<?php
 					$video_url = get_theme_mod('about_video_url', 'https://cotidienlabel.com/wp-content/uploads/2025/05/mobile_720_version2_encoded.mp4');
 					?>
@@ -44,14 +44,14 @@ $prod_image_2 = get_theme_mod('home_prod_img_2', $default_img);
 				</video>
 				<div class="video-text-overlay">
 					<h2>COTIDIEN</h2>
-				</div>
-				<!-- <a href="/shop">
+				</div> -->
+				<a href="/shop">
 					<img class="w-full h-full object-cover" src="<?php echo esc_url($home_mobile_header); ?>"
 							alt="Cotidien" />
 				</a>
 				<div class="video-text-overlay">
 					<h2>– sunlit essentials –</h2>
-				</div> -->
+				</div>
 			</div>
 
 			<!-- Desktop image hero -->
