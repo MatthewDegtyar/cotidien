@@ -9,7 +9,7 @@ get_header();
     <h1 class="text-[36px] mb-6 font-cormorant">Return Policy</h1>
 
    <p class="text-sm mb-4">
-        We accept exchanges or store credit on eligible items returned within 14 days of delivery. Please note that customers are responsible for any return shipping costs. Customized orders, including those with sizing adjustments, are final sale and not eligible for exchange or store credit.
+        We accept exchanges or store credit on eligible items returned within 14 days of delivery. To qualify, items must be unworn, unwashed, and returned in their original condition with all tags attached. Please note that customers are responsible for any return shipping costs. Customized orders, including those with sizing adjustments, are final sale and not eligible for exchange or store credit.
     </p>
 
     <p class="text-sm mb-4">
