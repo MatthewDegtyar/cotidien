@@ -153,7 +153,6 @@ if ( post_password_required() ) {
 					<p><?php echo wp_kses_post($care_instructions); ?></p>
 				<?php endif; ?>
 
-				<p> Due to the handcrafted nature of this item, we do not offer returns or exchanges. </p>
 				</section>
 
 				<section id="content-size-fit">
